@@ -75,7 +75,7 @@ static void Voice_Say(uint8_t category, uint8_t number) {
 }
 
 static uint8_t Voice_Random(uint8_t number) {
-    return (Clock_Second + Clock_Minute + Clock_Hour) % number;
+    return (Clock_Second + Clock_Minute + Clock_Hour) % number + 1;
 }
 
 void Voice_Weather(void) {
