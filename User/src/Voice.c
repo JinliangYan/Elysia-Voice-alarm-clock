@@ -10,50 +10,54 @@
 
 /*定义语音类别和对应数目*/
     /*闲聊*/
-#define VOICE_CHAT                                  07
+#define VOICE_CHAT                                  8
 #define VOICE_CHAT_NUM                              30
     /*天气*/
-#define VOICE_WEATHER_RAIN                          0
+#define VOICE_WEATHER_RAIN                          1
 #define VOICE_WEATHER_RAIN_NUM                      1
 
-#define VOICE_WEATHER_SUNNY                         1
+#define VOICE_WEATHER_SUNNY                         2
 #define VOICE_WEATHER_SUNNY_NUM                     1
 
-#define VOICE_WEATHER_COOL_DOWN                     2
+#define VOICE_WEATHER_COOL_DOWN                     3
 #define VOICE_WEATHER_COOL_DOWN_NUM                 1
     /*情景*/
-#define VOICE_SCENE_MISSION_ACCOMPLISHED            4
+
+#define VOICE_BREAK_TIME                            4
+#define VOICE_BREAK_TIME_NUM                        2
+
+#define VOICE_SCENE_MISSION_ACCOMPLISHED            5
 #define VOICE_SCENE_MISSION_ACCOMPLISHED_NUM        2
 
-#define VOICE_SCENE_SLEEP_TIME                      5
+#define VOICE_SCENE_SLEEP_TIME                      6
 #define VOICE_SCENE_SLEEP_TIME_NUM                  5
 
-#define VOICE_SCENE_GETUP_TIME                      6
+#define VOICE_SCENE_GETUP_TIME                      7
 #define VOICE_SCENE_GETUP_TIME_NUM                  1
 
     /*时间*/
-#define VOICE_TIME_DUSK                             8
+#define VOICE_TIME_DUSK                             9
 #define VOICE_TIME_DUSK_NUM                         2
 
-#define VOICE_TIME_WINTER                           9
+#define VOICE_TIME_WINTER                           10
 #define VOICE_TIME_WINTER_NUM                       1
 
-#define VOICE_TIME_MONDAY                           10
+#define VOICE_TIME_MONDAY                           11
 #define VOICE_TIME_WINTER_NUM                       1
 
-#define VOICE_TIME_SUNDAY                           11
+#define VOICE_TIME_SUNDAY                           12
 #define VOICE_TIME_SUNDAY_NUM                       1
 
-#define VOICE_TIME_MORNING                          12
+#define VOICE_TIME_MORNING                          13
 #define VOICE_TIME_MORNING_NUM                      4
 
-#define VOICE_TIME_NIGHT                            13
+#define VOICE_TIME_NIGHT                            14
 #define VOICE_TIME_NIGHT_NUM                        2
     /*生日*/
-#define VOICE_BIRTHDAY_ME                           14
+#define VOICE_BIRTHDAY_ME                           15
 #define VOICE_BIRTHDAY_ME_NUM                        2
 
-#define VOICE_BIRTHDAY_ELYSIA                       14
+#define VOICE_BIRTHDAY_ELYSIA                       16
 #define VOICE_BIRTHDAY_ELYSIA_NUM                   2
 
 #define VOICE_DEFAULT                               VOICE_CHAT
