@@ -1,0 +1,3 @@
+C:/Users/mikuc/Desktop/Alarm_Project/alarm_demo/Alysia-voice-alarm-clock-main/cmake-build-debug/CMakeFiles/CLionSTM32Demo.elf.dir
+C:/Users/mikuc/Desktop/Alarm_Project/alarm_demo/Alysia-voice-alarm-clock-main/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mikuc/Desktop/Alarm_Project/alarm_demo/Alysia-voice-alarm-clock-main/cmake-build-debug/CMakeFiles/rebuild_cache.dir

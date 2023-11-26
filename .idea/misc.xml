@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
+  <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$/Hardware/inc" />
+      <file path="$PROJECT_DIR$/Hardware/src" />
+      <file path="$PROJECT_DIR$/System/inc" />
+      <file path="$PROJECT_DIR$/System/src" />
+      <file path="$PROJECT_DIR$/User/inc" />
+      <file path="$PROJECT_DIR$/User/src" />
+    </sourceRoots>
+    <libraryRoots>
+      <file path="$PROJECT_DIR$/STM32F10x_FWLib" />
+    </libraryRoots>
+  </component>
+</project>
