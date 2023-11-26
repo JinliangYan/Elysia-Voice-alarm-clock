@@ -4,8 +4,9 @@
 
 #include "Voice.h"
 #include "Clock.h"
+#include "DFPLAYER_MINI.h"
 
-//#define USE_HARD_DECODING
+#define USE_HARDWARE_DECODING
 //#define USE_SOFTWARE_DECODING
 
 /*定义语音类别和对应数目*/
@@ -61,8 +62,8 @@
 
 
 static void Voice_Say(uint8_t category, uint8_t number) {
-#ifdef USE_HARD_DECODING
-
+#ifdef USE_HARDWARE_DECODING
+    DF_PlayFromFolder(category, number);
 #endif
 #ifdef USE_STDPERIPH_DRIVER
 
@@ -149,8 +150,8 @@ void Voice_BirthDay(uint8_t meOrAlysia) {
 }
 
 void Voice_Init(uint8_t volume) {
-#ifdef USE_HARD_DECODING
-
+#ifdef USE_HARDWARE_DECODING
+    DF_Init(volume);
 #endif
 #ifdef USE_STDPERIPH_DRIVER
 
