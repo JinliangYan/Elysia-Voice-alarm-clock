@@ -59,7 +59,6 @@ else () # 如果前面的条件都不满足，即构建类型不是 "Release"、
     message(STATUS "Minimal optimization, debug info included") # 在其他构建类型下，输出一条状态消息，指示当前选择了最小化的优化，并且还包含了调试信息。
     add_compile_options(-Og -g) # 在其他构建类型下，添加编译选项 -Og -g，这是 GCC 编译器的选项，用于启用适用于调试的优化级别，并生成调试符号信息。
 endif ()
-# 添加宏定义，指定使用 HAL 驱动和 STM32F103xB 芯片
 add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD)
 
 # 链接源文件 # 配置头文件搜索路径
