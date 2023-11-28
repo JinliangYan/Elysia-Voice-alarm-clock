@@ -18,6 +18,7 @@ void DF_Previous (void);
 void DF_Playback (void);
 void DF_Play(uint16_t Num);
 void DF_PlayFromFolder(uint8_t folder, uint8_t number);
+void DF_SetVolume(uint8_t volume);
 
 void Check_Key (void);
 

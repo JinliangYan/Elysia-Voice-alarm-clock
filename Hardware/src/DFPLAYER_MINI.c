@@ -59,6 +59,11 @@ void DF_Init (uint8_t volume) // 0~30
     Delay_ms(500);
 }
 
+void DF_SetVolume(uint8_t volume) {
+    Send_cmd(0x06, 0x00, volume);
+    Delay_ms(200);
+}
+
 void DF_Next (void)
 {
 	Send_cmd(0x01, 0x00, 0x00);

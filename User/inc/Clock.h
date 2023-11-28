@@ -13,7 +13,7 @@ typedef enum Clock_TimeOfDayDef {
     CLOCK_AFTERNOON,
     CLOCK_EVENING,
     CLOCK_DUSK,
-    CLOCK_NIGHT,
+    CLOCK_MIDNIGHT,
 } Clock_TimeOfDayDef;
 
 typedef enum Clock_SeasonDef {
@@ -29,7 +29,7 @@ extern Clock_TimeOfDayDef Clock_TimeOfDay;
 extern Clock_SeasonDef Clock_Season;
 
 void Clock_Init(void);
-void Clock_Loop(void);
+void Clock_Update(void);
 uint8_t Clock_IsSleepTime(void);
 uint8_t Clock_IsGetUpTime(void);
 

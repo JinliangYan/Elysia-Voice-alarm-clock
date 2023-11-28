@@ -24,7 +24,7 @@ static void Clock_DetermineTimeOfDay(void) {
     } else if (Clock_Hour >= 19 && Clock_Hour < 22) {
         Clock_TimeOfDay = CLOCK_EVENING;
     } else if (Clock_Hour >= 22 || Clock_Hour < 6) {
-        Clock_TimeOfDay = CLOCK_NIGHT;
+        Clock_TimeOfDay = CLOCK_MIDNIGHT;
     }
 }
 
@@ -59,7 +59,7 @@ static void Clock_UserConfig(void) {
 void Clock_Init(void) {
     Clock_UserConfig();
     DS1302_Init();
-    Clock_Loop();
+    Clock_Update();
 }
 
 void Clock_ReadDate(void) {
@@ -97,7 +97,7 @@ void Clock_GetAdvice(void) {
     }
 }
 
-void Clock_Loop(void) {
+void Clock_Update(void) {
     Clock_ReadDate();
     Clock_GetAdvice();
     Clock_DetermineTimeOfDay();

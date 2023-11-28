@@ -10,6 +10,6 @@
 
 void Serial_Init(void);
 void Serial_SendByte(uint8_t Byte);
-uint8_t Serial_GetRxFlag(void);
-uint8_t Serial_GetRxData(void);
+void Serial_SendArray(uint8_t *Array, uint16_t Length);
+
 #endif //CLIONSTM32DEMO_SERIAL_H

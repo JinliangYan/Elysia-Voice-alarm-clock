@@ -28,10 +28,10 @@ const char *Kaomoji[] = {
 void HomePage_Init(void) {
     SSD1306_Init();
     DS18B20_Init();
-    HomePage_FlashHomepage();
+    HomePage_Update();
 }
 
-void HomePage_FlashHomepage(void) {
+void HomePage_Update(void) {
     DS18B20_ConvertT();
     char buffer[20];
 
@@ -63,8 +63,4 @@ void HomePage_FlashHomepage(void) {
     SSD1306_Puts_M(Clock_Advice);
     SSD1306_DrawLine(0, 15, SSD1306_WIDTH - 1, 15, SSD1306_COLOR_WHITE);
     SSD1306_UpdateScreen();
-}
-
-void HomePage_Loop(void) {
-    HomePage_FlashHomepage();
 }
