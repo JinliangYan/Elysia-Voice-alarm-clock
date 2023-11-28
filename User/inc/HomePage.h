@@ -7,7 +7,6 @@
 #include "stm32f10x.h"
 
 void HomePage_Init(void);
-void HomePage_FlashHomepage(void);
-void HomePage_Loop(void);
+void HomePage_Update(void);
 
 #endif //CLIONSTM32DEMO_HOMEPAGE_H
