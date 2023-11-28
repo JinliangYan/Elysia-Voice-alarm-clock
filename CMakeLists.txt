@@ -18,7 +18,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # project settings
 # 项目设置
-project(CLionSTM32Demo C CXX ASM)
+project(Elysia-Voice-alarm-clock C CXX ASM)
 # CMake 中的一个命令，用于设置 C++ 编译的标准版本。在这个特定的命令中，它将 C++ 标准设置为 C++17。
 set(CMAKE_CXX_STANDARD 17)
 #是 CMake 中的一个命令，用于设置 C 编译的标准版本。在这个特定的命令中，它将 C 标准设置为 C11。
