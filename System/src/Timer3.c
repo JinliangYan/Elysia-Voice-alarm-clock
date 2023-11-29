@@ -2,9 +2,9 @@
 // Created by Jinliang on 11/12/2023.
 //
 
-#include "Timer.h"
+#include "Timer3.h"
 
-void Timer_Init(void) {
+void Timer3_Init(void) {
     //开启时钟
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 

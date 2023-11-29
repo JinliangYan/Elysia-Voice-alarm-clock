@@ -6,6 +6,6 @@
 #define ElysiaVACLK_TIMER_H
 
 #include "stm32f10x.h"
-void Timer_Init(void);
+void Timer3_Init(void);
 
 #endif //ElysiaVACLK_TIMER_H
