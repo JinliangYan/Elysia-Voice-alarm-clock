@@ -2,8 +2,8 @@
 // Created by Jinliang on 11/22/2023.
 //
 
-#ifndef CLIONSTM32DEMO_DS1302_H
-#define CLIONSTM32DEMO_DS1302_H
+#ifndef ElysiaVACLK_DS1302_H
+#define ElysiaVACLK_DS1302_H
 
 #include "stm32f10x.h"
 
@@ -22,4 +22,4 @@ void DS1302_Init(void);									//DS1302 初始化日期和时间 函数
 void DS1302_Read(void);									//DS1302 读取  日期和时间 函数
 
 
-#endif //CLIONSTM32DEMO_DS1302_H
+#endif //ElysiaVACLK_DS1302_H

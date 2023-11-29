@@ -2,8 +2,8 @@
 // Created by Jinliang on 11/23/2023.
 //
 
-#ifndef CLIONSTM32DEMO_VOICE_H
-#define CLIONSTM32DEMO_VOICE_H
+#ifndef ElysiaVACLK_VOICE_H
+#define ElysiaVACLK_VOICE_H
 
 #include "stm32f10x.h"
 
@@ -24,4 +24,4 @@ void Voice_SetVolume(uint16_t volume);
 void Voice_ON(void);
 void Voice_OFF(void);
 
-#endif //CLIONSTM32DEMO_VOICE_H
+#endif //ElysiaVACLK_VOICE_H

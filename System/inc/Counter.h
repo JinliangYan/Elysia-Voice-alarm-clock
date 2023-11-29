@@ -2,10 +2,10 @@
 // Created by Jinliang on 11/12/2023.
 //
 
-#ifndef CLIONSTM32DEMO_TIMER_H
-#define CLIONSTM32DEMO_TIMER_H
+#ifndef ElysiaVACLK_TIMER_H
+#define ElysiaVACLK_TIMER_H
 
 #include "stm32f10x.h"
 void Counter_Init(void);
 
-#endif //CLIONSTM32DEMO_TIMER_H
+#endif //ElysiaVACLK_TIMER_H

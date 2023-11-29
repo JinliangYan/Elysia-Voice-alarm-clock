@@ -2,8 +2,8 @@
 // Created by Jinliang on 11/23/2023.
 //
 
-#ifndef CLIONSTM32DEMO_CLOCK_H
-#define CLIONSTM32DEMO_CLOCK_H
+#ifndef ElysiaVACLK_CLOCK_H
+#define ElysiaVACLK_CLOCK_H
 
 #include "stm32f10x.h"
 #define CLOCK_Name "Elysia"
@@ -33,4 +33,4 @@ void Clock_Update(void);
 uint8_t Clock_IsSleepTime(void);
 uint8_t Clock_IsGetUpTime(void);
 
-#endif //CLIONSTM32DEMO_CLOCK_H
+#endif //ElysiaVACLK_CLOCK_H
