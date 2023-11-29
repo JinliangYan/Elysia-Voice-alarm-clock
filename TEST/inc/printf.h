@@ -82,6 +82,10 @@ __attribute__((format(printf, (one_based_format_index), (first_arg))))
 #ifndef PRINTF_VISIBILITY
 #define PRINTF_VISIBILITY
 #endif
+/**
+ * 初始化串口USART3
+ */
+void printf_init(void);
 
 /**
  * Prints/send a single character to some opaque output entity

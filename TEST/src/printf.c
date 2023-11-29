@@ -1363,6 +1363,39 @@ static int vsnprintf_impl(output_gadget_t* output, const char* format, va_list a
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+/***************串口初始化*******************/
+#include "stm32f10x_gpio.h"
+void printf_init(void) {
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate = 9600;
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Tx;
+    USART_InitStructure.USART_Parity = USART_Parity_No;
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_Init(USART3, &USART_InitStructure);
+
+    USART_Cmd(USART3, ENABLE);
+}
+
+static void serial_sendByte(uint8_t Byte) {
+    USART_SendData(USART3, Byte);
+    while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET)
+        ;
+}
+/******************************************/
+void putchar_(char c) {
+    serial_sendByte(c);
+}
 
 int vprintf_(const char* format, va_list arg)
 {
