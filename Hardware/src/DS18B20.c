@@ -74,13 +74,16 @@ uint8_t ds18b20_OneWire_ReceiveBit() {
 }
 
 void ds18b20_OneWire_SendByte(uint8_t Byte) {
+    __disable_irq();
     uint8_t i;
     for (i = 0; i < 8; i++) {
         ds18b20_OneWire_SendBit(Byte & (0x01 << i));
     }
+    __enable_irq();
 }
 
 uint8_t ds18b20_OneWire_ReceiveByte() {
+    __disable_irq();
     uint8_t i;
     uint8_t Byte = 0x00;
     for (i = 0; i < 8; i++) {
@@ -88,6 +91,7 @@ uint8_t ds18b20_OneWire_ReceiveByte() {
             Byte |= (0x01 << i);
         }
     }
+    __enable_irq();
     return Byte;
 }
 
