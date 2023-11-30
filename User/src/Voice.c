@@ -2,10 +2,11 @@
 // Created by Jinliang on 11/23/2023.
 //
 
-#include <stdlib.h>
 #include "Voice.h"
 #include "Clock.h"
 #include "DFPLAYER_MINI.h"
+
+#include "printf.h"
 
 #define USE_HARDWARE_DECODING
 //#define USE_SOFTWARE_DECODING
@@ -83,14 +84,17 @@
 #define VOICE_DEFAULT                             VOICE_INTERACTION_CHAT
 #define VOICE_DEFAULT_NUM                         VOICE_INTERACTION_CHAT_NUM
 
+#define VOICE_VOLUME_MAX  (30)
 
 Voice_StatusDef Voice_Status;
+uint8_t Voice_Volume;
 
 static void Voice_Say(uint8_t category, uint8_t number) {
     if (Voice_Status == VOICE_OFF)
         return;
 #ifdef USE_HARDWARE_DECODING
     DF_PlayFromFolder(category, number);
+    printf_("DF_PlayFromFolder(%d, %d) Invoked\r\n", category, number);
 #endif
 #ifdef USE_STDPERIPH_DRIVER
 
@@ -214,7 +218,22 @@ void Voice_OFF(void) {
 }
 
 void Voice_SetVolume(uint16_t volume) {
+    Voice_Volume = volume;
     DF_SetVolume(volume);
+}
+
+void Voice_VolumeIncrease(void) {
+    if (Voice_Volume == VOICE_VOLUME_MAX)
+        return;
+    Voice_Volume++;
+    DF_SetVolume(Voice_Volume);
+}
+
+void Voice_VolumeDecrease(void) {
+    if (Voice_Volume == 0)
+        return;
+    Voice_Volume--;
+    DF_SetVolume(Voice_Volume);
 }
 
 void Voice_Init(uint8_t volume) {
