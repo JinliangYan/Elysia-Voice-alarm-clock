@@ -1,14 +1,23 @@
 //
-// Created by Jinliang on 11/27/2023.
+// Created by Jinliang on 11/29/2023.
 //
 
-#ifndef ElysiaVACLK_KEY_H
-#define ElysiaVACLK_KEY_H
+#ifndef ElysiaVAC_KEY_H
+#define ElysiaVAC_KEY_H
 
 #include "stm32f10x.h"
 
-void Key_Init(void);
-uint8_t Key_Get(void);
-void Key_Loop(void);
+typedef enum Key_KeyDef {
+    KEY_MODE = 0,
+    KEY_POWER_PLAY,
+    KEY_VOICE_RESPONSE,
+    KEY_SET_TIME_ALARM,
+    KEY_VOLUME_PREV,
+    KEY_VOLUME_NEXT,
+    KEY_TIME_DECREASE,
+    KEY_TIME_INCREASE,
+} Key_KeyDef;
 
-#endif //ElysiaVACLK_KEY_H
+void Key_Init(void);
+
+#endif //ElysiaVAC_KEY_H
