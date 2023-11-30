@@ -50,6 +50,7 @@ void Screen_Update(void) {
     switch (Screen_Type) {
         case SCREEN_TIME:
             DS18B20_ConvertT();
+            SSD1306_Fill(SSD1306_COLOR_BLACK);
             char buffer[20];
 
             /*状态栏部部分*/
@@ -81,7 +82,8 @@ void Screen_Update(void) {
             SSD1306_DrawLine(0, 15, SSD1306_WIDTH - 1, 15, SSD1306_COLOR_WHITE);
             break;
         case SCREEN_MUSIC:
-            SSD1306_GotoXY(0, SSD1306_HEIGHT / 2);
+            SSD1306_GotoXY(16, SSD1306_HEIGHT / 2 - 12);
+            SSD1306_Fill(SSD1306_COLOR_BLACK);
             SSD1306_Puts_L("MUSIC");
             break;
         default:
