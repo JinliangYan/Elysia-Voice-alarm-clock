@@ -1,31 +1,31 @@
 #include <stdio.h>
-#include "HomePage.h"
+#include "Screen.h"
 #include "Clock.h"
 #include "Voice.h"
 #include "Key.h"
 
 #define LOG_TAG "MAIN"
 #include "elog.h"
+#include "Timer3.h"
 
 void System_Init(void);
 void Elog_Init(void);
 int main() {
     Elog_Init();
 
-    log_i("START\r\n");
-
     System_Init();
     while (1) {
         Clock_Update();
-        HomePage_Update();
+        Screen_Update();
     }
     return 0;
 }
 
 void System_Init(void) {
+    Timer3_Init();
     Key_Init();
     Clock_Init();
-    HomePage_Init();
+    Screen_Init();
     Voice_Init(20);
 }
 
