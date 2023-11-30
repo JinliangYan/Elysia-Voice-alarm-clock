@@ -40,12 +40,12 @@ void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 	uint8_t CmdSequence[10] = { Start_Byte, Version, Cmd_Len, cmd, Feedback, Parameter1, Parameter2, (Checksum>>8)&0x00ff, (Checksum&0x00ff), End_Byte};
 
     Serial_SendArray(CmdSequence, 10);
+    Delay_ms(200);
 }
 
 void DF_PlayFromStart(void)
 {
     Send_cmd(0x03,0x00,0x01);
-    Delay_ms(200);
 }
 
 
@@ -53,43 +53,40 @@ void DF_Init (uint8_t volume) // 0~30
 {
     Serial_Init();
 	Send_cmd(0x3F, 0x00, Source);
-    Delay_ms(200);
 	Send_cmd(0x06, 0x00, volume);
-    Delay_ms(500);
 }
 
 void DF_SetVolume(uint8_t volume) {
     Send_cmd(0x06, 0x00, volume);
-    Delay_ms(200);
 }
 
 void DF_Next (void)
 {
 	Send_cmd(0x01, 0x00, 0x00);
-    Delay_ms(200);
 }
 
 void DF_Pause (void)
 {
 	Send_cmd(0x0E, 0, 0);
-    Delay_ms(200);
+}
+
+void DF_Continue (void)
+{
+	Send_cmd(0x0D, 0, 0);
 }
 
 void DF_Previous (void)
 {
 	Send_cmd(0x02, 0, 0);
-    Delay_ms(200);
 }
 
 void DF_Playback (void)
 {
 	Send_cmd(0x0D, 0, 0);
-    Delay_ms(200);
 }
 
 void DF_Play(uint16_t Num) {
     Send_cmd(0x12,(uint8_t)(Num << 8),(uint8_t)Num);
-    Delay_ms(200);
 }
 
 /**
@@ -103,15 +100,6 @@ void DF_PlayFromFolder(uint8_t folder, uint8_t number) {
     Send_cmd(0x0F, folder, number);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+void DF_LoopFromFolder(uint8_t folder) {
+    Send_cmd(0x17, 0x00, folder);
+}
