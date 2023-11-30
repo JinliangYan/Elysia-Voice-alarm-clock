@@ -45,11 +45,25 @@ else ()
     message(STATUS "Minimal optimization, debug info included")
     add_compile_options(-Og -g)
 endif ()
+
 add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD)
 
-include_directories( "User/inc" "STM32F10x_FWLib/inc" "Hardware/inc" "System/inc" "TEST/inc")
-
-file(GLOB_RECURSE SOURCES "Startup/*.s" "User/src/*.c" "STM32F10x_FWLib/src/*.c" "Hardware/src/*.c" "System/src/*.c" "TEST/src/*.c")
+include_directories(
+        #标准库部分
+        "Libraries/STM32F10x_StdPeriph_Driver/inc" "Libraries/CMSIS"
+        #外部库部分
+        "Libraries/FFF" "Libraries/printf_"
+        #用户部分
+        "User/inc"  "Hardware/inc" "System/inc")
+file(GLOB_RECURSE SOURCES
+        #启动文件
+        "Startup/*.s"
+        #标准库文件
+        "Libraries/STM32F10x_StdPeriph_Driver/src/*.c" "Libraries/CMSIS/*.c"
+        #外部库文件
+        "Libraries/printf_/printf.c"
+        #用户文件
+        "User/src/*.c" "Hardware/src/*.c" "System/src/*.c")
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F103C8Tx_FLASH.ld )
 
