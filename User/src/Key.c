@@ -59,7 +59,7 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
     log_i("MODE_SINGLE_CLICK_Handler Invoked");
     //TODO Turn on/off Bluetooth when single click
-    Screen_Switch(Screen_GetType() % SCREEN_TYPE_NUM);
+    Screen_Switch(Screen_GetType() + 1 % SCREEN_TYPE_NUM);
 }
 
 //POWER_PLAY
