@@ -2,32 +2,30 @@
 #include "Clock.h"
 #include "Voice.h"
 #include "Key.h"
-#include "Timer.h"
+#include "Timer3.h"
+#include "../../Libraries/printf_/printf.h"         //for debug
 
+void System_Init(void);
+void Debug_Init(void);
 int main() {
-    Timer_Init();
-    Key_Init();
-    Clock_Init();
-    HomePage_Init();
-    Voice_Init(20);
+    Debug_Init();
 
+    System_Init();
     while (1) {
         Clock_Update();
         HomePage_Update();
-        if (Key_Get() == 1)
-            Voice_Invoke();
     }
     return 0;
 }
 
-void TIM3_IRQHandler(void) {
-    static uint8_t counter1, counter2;
-    if (TIM_GetITStatus(TIM3, TIM_IT_Update) == SET) {
-        counter1++;
-        if (counter1 == 15) {
-            counter1 = 0;
-            Key_Loop();         //20ms调用一次按键驱动函数
-        }
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-    }
+void System_Init(void) {
+    Timer3_Init();       // Key.c required
+    Key_Init();
+    Clock_Init();
+    HomePage_Init();
+    Voice_Init(20);
+}
+
+void Debug_Init(void) {
+    printf_init();
 }
