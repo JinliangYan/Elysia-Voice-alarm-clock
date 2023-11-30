@@ -58,7 +58,6 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 //MODE
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
     log_i("MODE_SINGLE_CLICK_Handler Invoked");
-    //TODO Turn on/off Bluetooth when single click
     Screen_Switch((Screen_GetType() + 1) % SCREEN_TYPE_NUM);
 }
 
@@ -102,7 +101,6 @@ static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(void *btn) {
 //VOLUME_NEXT
 static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(void *btn) {
     log_i("KEY_VOLUME_NEXT_SINGLE_CLICK_Handler Invoked");
-    //TODO Increase volume
     Voice_VolumeIncrease();
 }
 static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(void *btn) {
