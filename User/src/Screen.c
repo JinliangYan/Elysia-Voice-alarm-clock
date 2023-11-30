@@ -8,6 +8,9 @@
 #include "Clock.h"
 #include "DS18B20.h"
 
+#define LOG_TAG "SCREEN"
+#include "elog.h"
+
 #define SSD1306_Puts_S(str) SSD1306_Puts(str, &Font_7x10, SSD1306_COLOR_WHITE)
 #define SSD1306_Puts_M(str) SSD1306_Puts(str, &Font_11x18, SSD1306_COLOR_WHITE)
 #define SSD1306_Puts_L(str) SSD1306_Puts(str, &Font_16x26, SSD1306_COLOR_WHITE)
@@ -33,9 +36,14 @@ void Screen_Init(void) {
     Screen_Update();
 }
 
-void Screen_Switch(ScreenDef screenType) {
-    Screen_Type = screenType;
+void Screen_Switch(ScreenDef newType) {
+    log_i("Screen type %d --> %d", Screen_Type, newType);
+    Screen_Type = newType;
     SSD1306_Clear();
+}
+
+ScreenDef Screen_GetType(void) {
+    return Screen_Type;
 }
 
 void Screen_Update(void) {
@@ -71,6 +79,10 @@ void Screen_Update(void) {
             SSD1306_GotoXY(9*7+1, SSD1306_HEIGHT - 1 - 18);
             SSD1306_Puts_M(Clock_Advice);
             SSD1306_DrawLine(0, 15, SSD1306_WIDTH - 1, 15, SSD1306_COLOR_WHITE);
+            break;
+        case SCREEN_MUSIC:
+            SSD1306_GotoXY(0, SSD1306_HEIGHT / 2);
+            SSD1306_Puts_L("MUSIC");
             break;
         default:
             Screen_Switch(SCREEN_TIME);
