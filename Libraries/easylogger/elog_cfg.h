@@ -32,7 +32,7 @@
 /* enable log output. */
 #define ELOG_OUTPUT_ENABLE
 /* setting static output log level. range: from ELOG_LVL_ASSERT to ELOG_LVL_VERBOSE */
-#define ELOG_OUTPUT_LVL                          ELOG_LVL_DEBUG
+#define ELOG_OUTPUT_LVL                          ELOG_LVL_VERBOSE
 /* enable assert check */
 #define ELOG_ASSERT_ENABLE
 /* buffer size for every line's log */
@@ -70,7 +70,7 @@
 #define ELOG_ASYNC_OUTPUT_USING_PTHREAD
 /*---------------------------------------------------------------------------*/
 /* enable buffered output mode */
-#define ELOG_BUF_OUTPUT_ENABLE
+//#define ELOG_BUF_OUTPUT_ENABLE
 /* buffer size for buffered output mode */
 #define ELOG_BUF_OUTPUT_BUF_SIZE                 (ELOG_LINE_BUF_SIZE * 10)
 

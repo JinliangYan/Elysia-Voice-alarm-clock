@@ -29,7 +29,6 @@
 #include "elog.h"
 #include "printf.h"
 #include "core_cm3.h"
-#include "Clock.h"
 
 /**
  * EasyLogger port initialize
@@ -63,7 +62,7 @@ void elog_port_deinit(void) {
 void elog_port_output(const char *log, size_t size) {
     
     /* add your code here */
-    printf_("%.*s", size, log);
+    printf_(log);
 }
 
 /**
@@ -92,9 +91,7 @@ void elog_port_output_unlock(void) {
 const char *elog_port_get_time(void) {
     
     /* add your code here */
-    static char buffer[9];
-    sprintf_(buffer, "%02d:%02d:%02d", Clock_Hour, Clock_Minute, Clock_Second);
-    return buffer;
+    return "";
 }
 
 /**

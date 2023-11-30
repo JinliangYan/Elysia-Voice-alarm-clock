@@ -5,9 +5,10 @@
 #include "Key.h"
 #include "multi_button.h"
 #include "Voice.h"
-
-#include "printf.h"
 #include "Timer3.h"
+
+#define LOG_TAG "KEY"
+#include "elog.h"
 
 #define KEY_RCC                         RCC_APB2Periph_GPIOA
 #define KEY_PORT                        GPIOA
@@ -56,73 +57,75 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 
 //MODE
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
-    printf_("MODE_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("MODE_SINGLE_CLICK_Handler Invoked\r\n");
     //TODO Turn on/off Bluetooth when single click
 }
 
 //POWER_PLAY
 static void KEY_POWER_PLAY_SINGLE_CLICK_Handler(void *btn) {
-    printf_("KEY_POWER_PLAY_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("KEY_POWER_PLAY_SINGLE_CLICK_Handler Invoked\r\n");
     //TODO Play/pause music when single click
 }
 static void KEY_POWER_PLAY_LONG_PRESS_START_Handler(void *btn) {
-    printf_("KEY_POWER_PLAY_LONG_PRESS_START_Handler Invoked\r\n");
+    log_i("KEY_POWER_PLAY_LONG_PRESS_START_Handler Invoked\r\n");
     //TODO Turn on/off power instantly when long press start
 }
 
 //VOICE_RESPONSE
 static void VOICE_RESPONSE_SINGLE_CLICK_Handler(void *btn) {
-    printf_("VOICE_RESPONSE_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("VOICE_RESPONSE_SINGLE_CLICK_Handler Invoked\r\n");
     Voice_Invoke();
 }
 
 //SET_TIME_ALARM
 static void KEY_SET_TIME_SINGLE_CLICK_START_Handler(void *btn) {
-    printf_("KEY_SET_TIME_SINGLE_CLICK_START_Handler Invoked\r\n");
+    log_i("KEY_SET_TIME_SINGLE_CLICK_START_Handler Invoked\r\n");
     //TODO Switch the screen display to time/alarm clock 1/alarm clock 2... When single click
 }
 static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(void *btn) {
-    printf_("KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler Invoked\r\n");
+    log_i("KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler Invoked\r\n");
     //TODO Current screen time setting when long press start
     // Save time changes when long press start again
 }
 
 //VOLUME_PREV
 static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(void *btn) {
-    printf_("KEY_VOLUME_PREV_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("KEY_VOLUME_PREV_SINGLE_CLICK_Handler Invoked\r\n");
     Voice_VolumeDecrease();
 }
 static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(void *btn) {
-    printf_("KEY_VOLUME_PREV_LONG_PRESS_START_Handler Invoked\r\n");
+    log_i("KEY_VOLUME_PREV_LONG_PRESS_START_Handler Invoked\r\n");
     //TODO Previous music
 }
 
 //VOLUME_NEXT
 static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(void *btn) {
-    printf_("KEY_VOLUME_NEXT_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("KEY_VOLUME_NEXT_SINGLE_CLICK_Handler Invoked\r\n");
     //TODO Increase volume
     Voice_VolumeIncrease();
 }
 static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(void *btn) {
-    printf_("KEY_VOLUME_NEXT_LONG_PRESS_START_Handler Invoked\r\n");
+    log_i("KEY_VOLUME_NEXT_LONG_PRESS_START_Handler Invoked\r\n");
     //TODO Next music
 }
 
 //TIME_DECREASE
 static void KEY_TIME_DECREASE_SINGLE_CLICK_Handler(void *btn) {
-    printf_("KEY_TIME_DECREASE_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("KEY_TIME_DECREASE_SINGLE_CLICK_Handler Invoked\r\n");
     //TODO Decrease time
 }
 
 //TIME_INCREASE
 static void KEY_TIME_INCREASE_SINGLE_CLICK_Handler(void *btn) {
-    printf_("KEY_TIME_INCREASE_SINGLE_CLICK_Handler Invoked\r\n");
+    log_i("KEY_TIME_INCREASE_SINGLE_CLICK_Handler Invoked\r\n");
     //TODO Increase time
 }
 
 //////////////////////////////////////////////////////////////////////
 
 void Key_Init(void) {
+    Timer3_Init();
+
     RCC_APB2PeriphClockCmd(KEY_RCC, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStruct;
