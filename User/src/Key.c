@@ -179,17 +179,17 @@ void Key_Init(void) {
 }
 
 
-int main() {
-    printf_init();
-    Key_Init();
-    Timer3_Init();
-    Voice_Init(10);
-
-    printf_("%d\r\n", read_button_GPIO(KEY_VOICE_RESPONSE));
-    while (1) {
-
-    }
-}
+//int main() {
+//    printf_init();
+//    Key_Init();
+//    Timer3_Init();
+//    Voice_Init(10);
+//
+//    printf_("%d\r\n", read_button_GPIO(KEY_VOICE_RESPONSE));
+//    while (1) {
+//
+//    }
+//}
 
 
 __attribute__((unused)) void TIM3_IRQHandler(void) {
