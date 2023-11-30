@@ -15,15 +15,15 @@
   *          is using in the C source code, usually in main.c. This file contains:
   *           - Configuration section that allows to select:
   *              - The device used in the target application
-  *              - To use or not the peripheral�s drivers in application code(i.e. 
-  *                code will be based on direct access to peripheral�s registers 
+  *              - To use or not the peripheral�s drivers in application code(i.e. 
+  *                code will be based on direct access to peripheral�s registers 
   *                rather than drivers API), this option is controlled by 
   *                "#define USE_STDPERIPH_DRIVER"
   *              - To change few application-specific parameters such as the HSE 
   *                crystal frequency
   *           - Data structures and the address mapping for all peripherals
   *           - Peripheral's registers declarations and bits definition
-  *           - Macros to access peripheral�s registers hardware
+  *           - Macros to access peripheral�s registers hardware
   *
   ******************************************************************************
   * @attention
@@ -37,6 +37,22 @@
   *
   ******************************************************************************
   */
+
+/*原来库文件这些定义在core_cm3.h中, 但是如果直接include core_cm3.h的话core_cm3.h中用到的IRQn_Type的定义又在这个头文件中...
+ * 为了省事直接把这些定义复制到此处*/
+/**
+ * IO definitions
+ *
+ * define access restrictions to peripheral registers
+ */
+
+#ifdef __cplusplus
+#define     __I     volatile                /*!< defines 'read only' permissions      */
+#else
+#define     __I     volatile const          /*!< defines 'read only' permissions      */
+#endif
+#define     __O     volatile                  /*!< defines 'write only' permissions     */
+#define     __IO    volatile                  /*!< defines 'read / write' permissions   */
 
 /** @addtogroup CMSIS
   * @{
