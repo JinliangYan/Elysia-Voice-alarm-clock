@@ -5,17 +5,10 @@
 #include "DS18B20.h"
 #include "Delay.h"
 
-#define DS13B20_DQ_RCC		RCC_APB2Periph_GPIOA		//时钟
-#define DS1302_DQ_PORT		GPIOA						//端口
+#define DS13B20_DQ_RCC		RCC_APB2Periph_GPIOB		//时钟
+#define DS1302_DQ_PORT		GPIOB						//端口
 #define DS1302_DQ_PIN		GPIO_Pin_1					//引脚
 
-#define DS13B20_VCC_RCC		RCC_APB2Periph_GPIOA		//时钟
-#define DS1302_VCC_PORT		GPIOA						//端口
-#define DS1302_VCC_PIN		GPIO_Pin_0					//引脚
-
-#define DS13B20_GND_RCC		RCC_APB2Periph_GPIOA		//时钟
-#define DS1302_GND_PORT		GPIOA						//端口
-#define DS1302_GND_PIN		GPIO_Pin_2					//引脚
 
 #define DS1302_DQ_LOW() GPIO_ResetBits(DS1302_DQ_PORT, DS1302_DQ_PIN)
 #define DS1302_DQ_HIGH() GPIO_SetBits(DS1302_DQ_PORT, DS1302_DQ_PIN)
@@ -38,13 +31,9 @@ void DS1302_SetDQOutput(void) {
 }
 
 void DS18B20_Init(void) {
-    RCC_APB2PeriphClockCmd(DS13B20_DQ_RCC | DS13B20_VCC_RCC | DS13B20_GND_RCC, ENABLE);
-    GPIO_InitTypeDef GPIO_InitStruct = {DS1302_VCC_PIN, GPIO_Speed_50MHz, GPIO_Mode_Out_PP};
-    GPIO_Init(DS1302_VCC_PORT, &GPIO_InitStruct);
-    GPIO_SetBits(DS1302_VCC_PORT, DS1302_VCC_PIN);
-    GPIO_InitStruct.GPIO_Pin = DS1302_GND_PIN;
-    GPIO_Init(DS1302_GND_PORT, &GPIO_InitStruct);
-    GPIO_ResetBits(DS1302_GND_PORT, DS1302_GND_PIN);
+    RCC_APB2PeriphClockCmd(DS13B20_DQ_RCC, ENABLE);
+    GPIO_InitTypeDef GPIO_InitStruct = {DS1302_DQ_PIN, GPIO_Speed_50MHz, GPIO_Mode_Out_PP};
+    GPIO_Init(DS1302_DQ_PORT, &GPIO_InitStruct);
 }
 
 uint8_t ds18b20_OneWire_Start(void) {
@@ -85,13 +74,16 @@ uint8_t ds18b20_OneWire_ReceiveBit() {
 }
 
 void ds18b20_OneWire_SendByte(uint8_t Byte) {
+    __disable_irq();
     uint8_t i;
     for (i = 0; i < 8; i++) {
         ds18b20_OneWire_SendBit(Byte & (0x01 << i));
     }
+    __enable_irq();
 }
 
 uint8_t ds18b20_OneWire_ReceiveByte() {
+    __disable_irq();
     uint8_t i;
     uint8_t Byte = 0x00;
     for (i = 0; i < 8; i++) {
@@ -99,6 +91,7 @@ uint8_t ds18b20_OneWire_ReceiveByte() {
             Byte |= (0x01 << i);
         }
     }
+    __enable_irq();
     return Byte;
 }
 

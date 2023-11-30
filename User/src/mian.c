@@ -1,33 +1,46 @@
-#include "HomePage.h"
+#include <stdio.h>
+#include "Screen.h"
 #include "Clock.h"
 #include "Voice.h"
 #include "Key.h"
-#include "Timer.h"
 
+#define LOG_TAG "MAIN"
+#include "elog.h"
+#include "Timer3.h"
+
+void System_Init(void);
+void Elog_Init(void);
 int main() {
-    Timer_Init();
-    Key_Init();
-    Clock_Init();
-    HomePage_Init();
-    Voice_Init(20);
+    Elog_Init();
 
+    System_Init();
     while (1) {
         Clock_Update();
-        HomePage_Update();
-        if (Key_Get() == 1)
-            Voice_Invoke();
+        Screen_Update();
     }
     return 0;
 }
 
-void TIM3_IRQHandler(void) {
-    static uint8_t counter1, counter2;
-    if (TIM_GetITStatus(TIM3, TIM_IT_Update) == SET) {
-        counter1++;
-        if (counter1 == 15) {
-            counter1 = 0;
-            Key_Loop();         //20ms调用一次按键驱动函数
-        }
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-    }
+void System_Init(void) {
+    Timer3_Init();
+    Key_Init();
+    Clock_Init();
+    Screen_Init();
+    Voice_Init(20);
+}
+
+void Elog_Init(void) {
+    /* close printf buffer */
+    setbuf(stdout, NULL);
+    /* initialize EasyLogger */
+    elog_init();
+    /* set EasyLogger log format */
+    elog_set_fmt(ELOG_LVL_ASSERT, ELOG_FMT_ALL);
+    elog_set_fmt(ELOG_LVL_ERROR, ELOG_FMT_LVL | ELOG_FMT_TAG | ELOG_FMT_TIME);
+    elog_set_fmt(ELOG_LVL_WARN, ELOG_FMT_LVL | ELOG_FMT_TAG | ELOG_FMT_TIME);
+    elog_set_fmt(ELOG_LVL_INFO, ELOG_FMT_LVL | ELOG_FMT_TAG | ELOG_FMT_TIME);
+    elog_set_fmt(ELOG_LVL_DEBUG, ELOG_FMT_ALL & ~ELOG_FMT_FUNC);
+    elog_set_fmt(ELOG_LVL_VERBOSE, ELOG_FMT_ALL & ~ELOG_FMT_FUNC);
+    /* start EasyLogger */
+    elog_start();
 }

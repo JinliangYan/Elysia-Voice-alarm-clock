@@ -21,6 +21,8 @@ void Voice_Season(void);
 void Voice_Init(uint8_t volume);
 void Voice_BirthDay(uint8_t meOrAlysia);
 void Voice_SetVolume(uint16_t volume);
+void Voice_VolumeIncrease(void);
+void Voice_VolumeDecrease(void);
 void Voice_ON(void);
 void Voice_OFF(void);
 
