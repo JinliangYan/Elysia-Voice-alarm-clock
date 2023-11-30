@@ -8,7 +8,6 @@
 #include "stm32f10x.h"
 #include "Serial.h"
 #include "Delay.h"
-#include "Serial.h"
 
 #define DF_UART USART1
 
