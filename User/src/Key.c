@@ -152,24 +152,31 @@ void Key_Init(void) {
     /*Attach the keys' event*/
     //MODE
     button_attach(&MODE, SINGLE_CLICK, MODE_SINGLE_CLICK_Handler);
+    button_attach(&MODE, PRESS_REPEAT, MODE_SINGLE_CLICK_Handler);
     //POWER_PLAY
     button_attach(&POWER_PLAY, SINGLE_CLICK, KEY_POWER_PLAY_SINGLE_CLICK_Handler);
+    button_attach(&POWER_PLAY, PRESS_REPEAT, KEY_POWER_PLAY_SINGLE_CLICK_Handler);
     button_attach(&POWER_PLAY, LONG_PRESS_START, KEY_POWER_PLAY_LONG_PRESS_START_Handler);
     //VOICE_RESPONSE
     button_attach(&VOICE_RESPONSE, SINGLE_CLICK, VOICE_RESPONSE_SINGLE_CLICK_Handler);
+    button_attach(&VOICE_RESPONSE, PRESS_REPEAT, VOICE_RESPONSE_SINGLE_CLICK_Handler);
     //SET_TIME_ALARM
     button_attach(&SET_TIME_ALARM, SINGLE_CLICK, KEY_SET_TIME_SINGLE_CLICK_START_Handler);
+    button_attach(&SET_TIME_ALARM, PRESS_REPEAT, KEY_SET_TIME_SINGLE_CLICK_START_Handler);
     button_attach(&SET_TIME_ALARM, LONG_PRESS_START, KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler);
     //KEY_VOLUME_PREV
     button_attach(&VOLUME_PREV, SINGLE_CLICK, KEY_VOLUME_PREV_SINGLE_CLICK_Handler);
+    button_attach(&VOLUME_PREV, PRESS_REPEAT, KEY_VOLUME_PREV_SINGLE_CLICK_Handler);
     button_attach(&VOLUME_PREV, LONG_PRESS_START, KEY_VOLUME_PREV_LONG_PRESS_START_Handler);
     //VOLUME_NEXT
     button_attach(&VOLUME_NEXT, SINGLE_CLICK, KEY_VOLUME_NEXT_SINGLE_CLICK_Handler);
     button_attach(&VOLUME_NEXT, LONG_PRESS_START, KEY_VOLUME_NEXT_LONG_PRESS_START_Handler);
     //TIME_DECREASE
     button_attach(&TIME_DECREASE, SINGLE_CLICK, KEY_TIME_DECREASE_SINGLE_CLICK_Handler);
+    button_attach(&TIME_DECREASE, PRESS_REPEAT, KEY_TIME_DECREASE_SINGLE_CLICK_Handler);
     //TIME_INCREASE
     button_attach(&TIME_INCREASE, SINGLE_CLICK, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
+    button_attach(&TIME_INCREASE, PRESS_REPEAT, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
 
     button_start(&MODE);
     button_start(&POWER_PLAY);
@@ -200,7 +207,7 @@ __attribute__((unused)) void TIM3_IRQHandler(void) {
     if (TIM_GetITStatus(TIM3, TIM_IT_Update) == SET) {
         counter1++;
         counter2++;
-        if (counter1 == 5) {
+        if (counter1 == TICKS_INTERVAL) {
             counter1 = 0;
             button_ticks();
         }
