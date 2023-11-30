@@ -52,7 +52,7 @@ include_directories(
         #标准库部分
         "Libraries/STM32F10x_StdPeriph_Driver/inc" "Libraries/CMSIS"
         #外部库部分
-        "Libraries/FFF" "Libraries/printf_" "Libraries/easylogger"
+        "Libraries/FFF" "Libraries/printf_" "Libraries/easylogger" "Libraries/multi_button"
         #用户部分
         "User/inc"  "Hardware/inc" "System/inc")
 file(GLOB_RECURSE SOURCES
@@ -61,7 +61,7 @@ file(GLOB_RECURSE SOURCES
         #标准库文件
         "Libraries/STM32F10x_StdPeriph_Driver/src/*.c" "Libraries/CMSIS/*.c"
         #外部库文件
-        "Libraries/printf_/printf.c" "Libraries/easylogger/*.c"
+        "Libraries/printf_/printf.c" "Libraries/easylogger/*.c" "Libraries/multi_button/multi_button.c"
         #用户文件
         "User/src/*.c" "Hardware/src/*.c" "System/src/*.c")
 
