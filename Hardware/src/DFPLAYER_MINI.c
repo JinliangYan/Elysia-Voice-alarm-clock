@@ -9,6 +9,9 @@
 #include "Serial.h"
 #include "Delay.h"
 
+#define LOG_TAG "DFPLAYER_MINI"
+#include "elog.h"
+
 #define DF_UART USART1
 
 #define Source      0x02  // TF CARD
@@ -34,6 +37,7 @@ int isplaying=1;
 
 void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
+    log_d("Send_cmd cmd = %02X p1 = %02X p2 = %02X", cmd, Parameter1, Parameter2);
 	uint16_t Checksum = Version + Cmd_Len + cmd + Feedback + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 

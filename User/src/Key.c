@@ -16,8 +16,8 @@
 // 0 有效电平按键
 #define KEY_MODE_PIN            GPIO_Pin_0          //模式切换键
 #define KEY_POWER_PLAY_PIN      GPIO_Pin_1          //开关机键/播放暂停键
-//#define KEY_BRIGHTNESS_PIN      GPIO_Pin_2          //亮度调节
-#define KEY_VOICE_RESPONSE_PIN      GPIO_Pin_2          //语音回应
+//#define KEY_BRIGHTNESS_PIN    GPIO_Pin_2          //亮度调节
+#define KEY_VOICE_RESPONSE_PIN  GPIO_Pin_2          //语音回应
 #define KEY_SET_TIME_ALARM_PIN  GPIO_Pin_3          //设置时间、设置语音闹钟
 // 1 有效电平按键
 #define KEY_VOLUME_PREV_PIN     GPIO_Pin_4          //音量递增、上一曲目
@@ -59,12 +59,16 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
     log_i("MODE_SINGLE_CLICK_Handler Invoked");
     Screen_Switch((Screen_GetType() + 1) % SCREEN_TYPE_NUM);
+    if (Screen_GetType() == SCREEN_MUSIC)
+        Voice_MusicPlay();
 }
 
 //POWER_PLAY
 static void KEY_POWER_PLAY_SINGLE_CLICK_Handler(void *btn) {
+    static uint8_t i;
     log_i("KEY_POWER_PLAY_SINGLE_CLICK_Handler Invoked");
-    //TODO Play/pause music when single click
+    if (i % 2 == 0)     Voice_MusicPause();
+    else                Voice_MusicContinue();
 }
 static void KEY_POWER_PLAY_LONG_PRESS_START_Handler(void *btn) {
     log_i("KEY_POWER_PLAY_LONG_PRESS_START_Handler Invoked");
@@ -95,7 +99,7 @@ static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(void *btn) {
 }
 static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(void *btn) {
     log_i("KEY_VOLUME_PREV_LONG_PRESS_START_Handler Invoked");
-    //TODO Previous music
+    Voice_MusicPrevious();
 }
 
 //VOLUME_NEXT
@@ -105,7 +109,7 @@ static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(void *btn) {
 }
 static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(void *btn) {
     log_i("KEY_VOLUME_NEXT_LONG_PRESS_START_Handler Invoked");
-    //TODO Next music
+    Voice_MusicNext();
 }
 
 //TIME_DECREASE

@@ -6,7 +6,8 @@
 #include "Clock.h"
 #include "DFPLAYER_MINI.h"
 
-#include "printf.h"
+#define LOG_TAG "VOICE"
+#include "elog.h"
 
 #define USE_HARDWARE_DECODING
 //#define USE_SOFTWARE_DECODING
@@ -71,6 +72,10 @@
 #define VOICE_SEASON_SUMMER                       (VOICE_SEASON_BASE + 2)
 #define VOICE_SEASON_SUMMER_NUM                   1    // Number of responses for summer season
 
+/*音乐*/
+#define VOICE_MUSIC_RESOURCE                      80
+#define VOICE_MUSIC_NUM                           2
+
 /* 杂项 */
 #define VOICE_MISC_BASE                           81
 #define VOICE_MISC_CHARACTER_BIRTHDAY             (VOICE_MISC_BASE + 0)
@@ -86,15 +91,17 @@
 
 #define VOICE_VOLUME_MAX  (30)
 
-Voice_StatusDef Voice_Status;
-uint8_t Voice_Volume;
+static Voice_StatusDef Voice_Status;
+static uint8_t Voice_Volume;
+
+static uint8_t Voice_MusicNow;
 
 static void Voice_Say(uint8_t category, uint8_t number) {
     if (Voice_Status == VOICE_OFF)
         return;
 #ifdef USE_HARDWARE_DECODING
     DF_PlayFromFolder(category, number);
-    printf_("DF_PlayFromFolder(%d, %d) Invoked\r\n", category, number);
+    log_i("DF_PlayFromFolder(%d, %d) Invoked", category, number);
 #endif
 #ifdef USE_STDPERIPH_DRIVER
 
@@ -207,6 +214,8 @@ void Voice_Invoke(void) {
             Voice_BirthDay(0); // 传递 0 表示触发角色生日
             break;
             // 添加其他函数触发的 case，如果有的话
+        default:
+            Voice_Chat();
     }
 }
 void Voice_ON(void) {
@@ -235,6 +244,39 @@ void Voice_VolumeDecrease(void) {
     Voice_Volume--;
     DF_SetVolume(Voice_Volume);
 }
+
+///////////////////////////////////////////////////////////////
+////////////////////////// MUSIC //////////////////////////////
+void Voice_MusicPlay(void) {
+    log_i("Voice_MusicPlay invoked");
+    DF_PlayFromFolder(VOICE_MUSIC_RESOURCE, Voice_MusicNow);
+}
+
+void Voice_MusicPause(void) {
+    log_i("Voice_MusicPause invoked");
+    DF_Pause();
+}
+
+void Voice_MusicContinue(void) {
+    log_i("Voice_MusicContinue invoked");
+    DF_Continue();
+}
+
+void Voice_MusicNext(void) {
+    log_i("Voice_MusicNext invoked");
+    Voice_MusicNow++;
+    if (Voice_MusicNow > VOICE_MUSIC_NUM) Voice_MusicNow = 0;
+    DF_PlayFromFolder(VOICE_MUSIC_RESOURCE, Voice_MusicNow);
+}
+
+void Voice_MusicPrevious(void) {
+    log_i("Voice_MusicPrevious invoked");
+    Voice_MusicNow--;
+    if (Voice_MusicNow == 0) Voice_MusicNow = VOICE_MUSIC_NUM;
+    DF_PlayFromFolder(VOICE_MUSIC_RESOURCE, Voice_MusicNow);
+}
+
+///////////////////////////////////////////////////////////////
 
 void Voice_Init(uint8_t volume) {
 #ifdef USE_HARDWARE_DECODING
