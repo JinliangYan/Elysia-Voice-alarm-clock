@@ -140,6 +140,7 @@ static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(__attribute__((unused)) void *b
     Voice_VolumeDecrease();
 }
 static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(__attribute__((unused)) void *btn) {
+    if (Screen_GetType() != SCREEN_MUSIC) return;
     log_i("Previous music...");
     Voice_MusicPrevious();
 }
@@ -150,6 +151,7 @@ static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(__attribute__((unused)) void *b
     Voice_VolumeIncrease();
 }
 static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(__attribute__((unused)) void *btn) {
+    if (Screen_GetType() != SCREEN_MUSIC) return;
     log_i("Next music...");
     Voice_MusicNext();
 }
