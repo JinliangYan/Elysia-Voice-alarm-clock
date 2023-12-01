@@ -15,7 +15,7 @@
 
 // 0 有效电平按键
 #define KEY_MODE_PIN            GPIO_Pin_0          //模式切换键
-#define KEY_POWER_PLAY_PIN      GPIO_Pin_1          //开关机键/播放暂停键
+#define KEY_PLAY_PAUSE_PIN      GPIO_Pin_1          //播放暂停键
 //#define KEY_BRIGHTNESS_PIN    GPIO_Pin_2          //亮度调节
 #define KEY_VOICE_RESPONSE_PIN  GPIO_Pin_2          //语音回应
 #define KEY_SET_TIME_ALARM_PIN  GPIO_Pin_3          //设置时间、设置语音闹钟
@@ -25,7 +25,7 @@
 #define KEY_TIME_DECREASE_PIN   GPIO_Pin_6          //设置时间递减
 #define KEY_TIME_INCREASE_PIN   GPIO_Pin_7          //设置时间递增
 
-struct Button MODE, POWER_PLAY, VOICE_RESPONSE, SET_TIME_ALARM,
+struct Button MODE, PLAY_PAUSE, VOICE_RESPONSE, SET_TIME_ALARM,
         VOLUME_PREV, VOLUME_NEXT, TIME_DECREASE, TIME_INCREASE;
 
 static uint8_t read_button_GPIO(uint8_t button_id)
@@ -34,8 +34,8 @@ static uint8_t read_button_GPIO(uint8_t button_id)
     {
         case KEY_MODE:
             return GPIO_ReadInputDataBit(KEY_PORT, KEY_MODE_PIN);
-        case KEY_POWER_PLAY:
-            return GPIO_ReadInputDataBit(KEY_PORT, KEY_POWER_PLAY_PIN);
+        case KEY_PLAY_PAUSE:
+            return GPIO_ReadInputDataBit(KEY_PORT, KEY_PLAY_PAUSE_PIN);
         case KEY_VOICE_RESPONSE:
             return GPIO_ReadInputDataBit(KEY_PORT, KEY_VOICE_RESPONSE_PIN);
         case KEY_SET_TIME_ALARM:
@@ -63,8 +63,8 @@ static void MODE_SINGLE_CLICK_Handler(void *btn) {
         Voice_MusicPlay();
 }
 
-//POWER_PLAY
-static void KEY_POWER_PLAY_SINGLE_CLICK_Handler(void *btn) {
+//PLAY_PAUSE
+static void KEY_PLAY_PAUSE_SINGLE_CLICK_Handler(void *btn) {
     static uint8_t i;
     if (i % 2 == 0) {
         log_i("Pause the music...");
@@ -74,10 +74,6 @@ static void KEY_POWER_PLAY_SINGLE_CLICK_Handler(void *btn) {
         Voice_MusicContinue();
     }
     i++;
-}
-static void KEY_POWER_PLAY_LONG_PRESS_START_Handler(void *btn) {
-    log_i("KEY_POWER_PLAY_LONG_PRESS_START_Handler Invoked");
-    //TODO Turn on/off power instantly when long press start
 }
 
 //VOICE_RESPONSE
@@ -135,7 +131,7 @@ void Key_Init(void) {
     RCC_APB2PeriphClockCmd(KEY_RCC, ENABLE);
 
     GPIO_InitTypeDef GPIO_InitStruct;
-    GPIO_InitStruct.GPIO_Pin = KEY_MODE_PIN | KEY_POWER_PLAY_PIN | KEY_VOICE_RESPONSE_PIN | KEY_SET_TIME_ALARM_PIN;
+    GPIO_InitStruct.GPIO_Pin = KEY_MODE_PIN | KEY_PLAY_PAUSE_PIN | KEY_VOICE_RESPONSE_PIN | KEY_SET_TIME_ALARM_PIN;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU;
     GPIO_Init(KEY_PORT, &GPIO_InitStruct);
@@ -147,7 +143,7 @@ void Key_Init(void) {
 
     /*Initializes the button struct handle*/
     button_init(&MODE, read_button_GPIO, 0, KEY_MODE);
-    button_init(&POWER_PLAY, read_button_GPIO, 0, KEY_POWER_PLAY);
+    button_init(&PLAY_PAUSE, read_button_GPIO, 0, KEY_PLAY_PAUSE);
     button_init(&VOICE_RESPONSE, read_button_GPIO, 0, KEY_VOICE_RESPONSE);
     button_init(&SET_TIME_ALARM, read_button_GPIO, 0, KEY_SET_TIME_ALARM);
     button_init(&VOLUME_PREV, read_button_GPIO, 1, KEY_VOLUME_PREV);
@@ -159,10 +155,9 @@ void Key_Init(void) {
     //MODE
     button_attach(&MODE, SINGLE_CLICK, MODE_SINGLE_CLICK_Handler);
     button_attach(&MODE, PRESS_REPEAT, MODE_SINGLE_CLICK_Handler);
-    //POWER_PLAY
-    button_attach(&POWER_PLAY, SINGLE_CLICK, KEY_POWER_PLAY_SINGLE_CLICK_Handler);
-    button_attach(&POWER_PLAY, PRESS_REPEAT, KEY_POWER_PLAY_SINGLE_CLICK_Handler);
-    button_attach(&POWER_PLAY, LONG_PRESS_START, KEY_POWER_PLAY_LONG_PRESS_START_Handler);
+    //PLAY_PAUSE
+    button_attach(&PLAY_PAUSE, SINGLE_CLICK, KEY_PLAY_PAUSE_SINGLE_CLICK_Handler);
+    button_attach(&PLAY_PAUSE, PRESS_REPEAT, KEY_PLAY_PAUSE_SINGLE_CLICK_Handler);
     //VOICE_RESPONSE
     button_attach(&VOICE_RESPONSE, SINGLE_CLICK, VOICE_RESPONSE_SINGLE_CLICK_Handler);
     button_attach(&VOICE_RESPONSE, PRESS_REPEAT, VOICE_RESPONSE_SINGLE_CLICK_Handler);
@@ -185,7 +180,7 @@ void Key_Init(void) {
     button_attach(&TIME_INCREASE, PRESS_REPEAT, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
 
     button_start(&MODE);
-    button_start(&POWER_PLAY);
+    button_start(&PLAY_PAUSE);
     button_start(&VOICE_RESPONSE);
     button_start(&SET_TIME_ALARM);
     button_start(&VOLUME_PREV);

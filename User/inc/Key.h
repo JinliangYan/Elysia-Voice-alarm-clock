@@ -9,7 +9,7 @@
 
 typedef enum Key_KeyDef {
     KEY_MODE = 0,
-    KEY_POWER_PLAY,
+    KEY_PLAY_PAUSE,
     KEY_VOICE_RESPONSE,
     KEY_SET_TIME_ALARM,
     KEY_VOLUME_PREV,
