@@ -86,14 +86,14 @@ static void Key_Update(void) {
 }
 
 //MODE
-static void MODE_SINGLE_CLICK_Handler(void *btn) {
+static void MODE_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("Switch mode...");
     Screen_Switch((Screen_GetType() + 1) % SCREEN_TYPE_NUM);
     Key_Update();
 }
 
 //PLAY_PAUSE
-static void KEY_PLAY_PAUSE_SINGLE_CLICK_Handler(void *btn) {
+static void KEY_PLAY_PAUSE_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     static uint8_t i;
     if (i % 2 == 0) {
         log_i("Pause the music...");
@@ -106,17 +106,17 @@ static void KEY_PLAY_PAUSE_SINGLE_CLICK_Handler(void *btn) {
 }
 
 //VOICE_RESPONSE
-static void VOICE_RESPONSE_SINGLE_CLICK_Handler(void *btn) {
+static void VOICE_RESPONSE_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("Say something...");
     Voice_Invoke();
 }
 
 //SET_TIME_ALARM
-static void KEY_SET_TIME_SINGLE_CLICK_START_Handler(void *btn) {
+static void KEY_SET_TIME_SINGLE_CLICK_START_Handler(__attribute__((unused)) void *btn) {
     log_i("KEY_SET_TIME_SINGLE_CLICK_START_Handler Invoked");
     //TODO 更换时间显示 (时间, 闹钟1, 闹钟2...)
 }
-static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(void *btn) {
+static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(__attribute__((unused)) void *btn) {
     log_i("KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler Invoked");
     //长按开始设置时间, 再次长按保存
     static _Bool i;
@@ -135,33 +135,33 @@ static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(void *btn) {
 }
 
 //VOLUME_PREV
-static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(void *btn) {
+static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("Decrease the volume...");
     Voice_VolumeDecrease();
 }
-static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(void *btn) {
+static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(__attribute__((unused)) void *btn) {
     log_i("Previous music...");
     Voice_MusicPrevious();
 }
 
 //VOLUME_NEXT
-static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(void *btn) {
+static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("Increase the volume...");
     Voice_VolumeIncrease();
 }
-static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(void *btn) {
+static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(__attribute__((unused)) void *btn) {
     log_i("Next music...");
     Voice_MusicNext();
 }
 
 //TIME_DECREASE
-static void KEY_TIME_DECREASE_SINGLE_CLICK_Handler(void *btn) {
+static void KEY_TIME_DECREASE_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("KEY_TIME_DECREASE_SINGLE_CLICK_Handler Invoked");
     //TODO Decrease time
 }
 
 //TIME_INCREASE
-static void KEY_TIME_INCREASE_SINGLE_CLICK_Handler(void *btn) {
+static void KEY_TIME_INCREASE_SINGLE_CLICK_Handler(__attribute__((unused)) void *btn) {
     log_i("KEY_TIME_INCREASE_SINGLE_CLICK_Handler Invoked");
     //TODO Increase time
 }
