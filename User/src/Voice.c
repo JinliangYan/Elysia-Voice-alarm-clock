@@ -179,10 +179,10 @@ void Voice_Season(void) {
 void Voice_BirthDay(uint8_t meOrAlysia) {
     uint8_t scene = VOICE_DEFAULT;
     uint8_t number = Voice_Random(VOICE_INTERACTION_CHAT_NUM);;
-    if (meOrAlysia == 0) {
+    if (meOrAlysia == 0 && Clock_IsAlysiaBirthday()) {
         scene = VOICE_MISC_CHARACTER_BIRTHDAY;
         number = Voice_Random(VOICE_MISC_CHARACTER_BIRTHDAY_NUM);
-    } else {
+    } else if (meOrAlysia == 1 && Clock_IsMyBirthday()) {
         scene = VOICE_MISC_BIRTHDAY;
         number = Voice_Random(VOICE_MISC_BIRTHDAY_NUM);
     }

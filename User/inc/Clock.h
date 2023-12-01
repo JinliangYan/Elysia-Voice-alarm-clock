@@ -32,5 +32,7 @@ void Clock_Init(void);
 void Clock_Update(void);
 uint8_t Clock_IsSleepTime(void);
 uint8_t Clock_IsGetUpTime(void);
+uint8_t Clock_IsMyBirthday(void);
+uint8_t Clock_IsAlysiaBirthday(void);
 
 #endif //ElysiaVACLK_CLOCK_H
