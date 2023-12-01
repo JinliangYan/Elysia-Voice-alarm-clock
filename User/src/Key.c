@@ -25,8 +25,13 @@
 #define KEY_TIME_DECREASE_PIN   GPIO_Pin_6          //设置时间递减
 #define KEY_TIME_INCREASE_PIN   GPIO_Pin_7          //设置时间递增
 
-struct Button MODE, PLAY_PAUSE, VOICE_RESPONSE, SET_TIME_ALARM,
-        VOLUME_PREV, VOLUME_NEXT, TIME_DECREASE, TIME_INCREASE;
+struct Button
+        MODE,                           //永远打开
+        PLAY_PAUSE,                     //只有音乐模式打开
+        VOICE_RESPONSE,                 //播放不被长时间占用时打开
+        SET_TIME_ALARM,                 //时间模式时打开
+        VOLUME_PREV, VOLUME_NEXT,       //永远打开
+        TIME_DECREASE, TIME_INCREASE;   //设置时间时才打开
 
 static uint8_t read_button_GPIO(uint8_t button_id)
 {
@@ -55,12 +60,36 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 //////////////////////////////////////////////////////////////////////
 /////////////////////// Key Event Handler ////////////////////////////
 
+static void Key_Update(void) {
+    switch (Screen_GetType()) {
+        case SCREEN_MUSIC:
+            button_stop(&VOICE_RESPONSE);
+            button_stop(&SET_TIME_ALARM);
+            button_stop(&TIME_INCREASE);
+            button_stop(&TIME_DECREASE);
+
+            button_start(&PLAY_PAUSE);
+
+            Voice_MusicPlay();
+            break;
+        case SCREEN_TIME:
+            button_stop(&PLAY_PAUSE);
+            button_stop(&TIME_DECREASE);
+            button_stop(&TIME_INCREASE);
+
+            button_start(&VOICE_RESPONSE);
+            button_start(&SET_TIME_ALARM);
+            break;
+        default:
+            log_e("Illegal screen type");
+    }
+}
+
 //MODE
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
     log_i("Switch mode...");
     Screen_Switch((Screen_GetType() + 1) % SCREEN_TYPE_NUM);
-    if (Screen_GetType() == SCREEN_MUSIC)
-        Voice_MusicPlay();
+    Key_Update();
 }
 
 //PLAY_PAUSE
@@ -85,12 +114,24 @@ static void VOICE_RESPONSE_SINGLE_CLICK_Handler(void *btn) {
 //SET_TIME_ALARM
 static void KEY_SET_TIME_SINGLE_CLICK_START_Handler(void *btn) {
     log_i("KEY_SET_TIME_SINGLE_CLICK_START_Handler Invoked");
-    //TODO Switch the screen display to time/alarm clock 1/alarm clock 2... When single click
+    //TODO 更换时间显示 (时间, 闹钟1, 闹钟2...)
 }
 static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(void *btn) {
     log_i("KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler Invoked");
-    //TODO Current screen time setting when long press start
-    // Save time changes when long press start again
+    //长按开始设置时间, 再次长按保存
+    static _Bool i;
+    if (i == 0) {
+        //TODO 进入时间设置模式
+        log_i("Setting time...");
+        button_start(&TIME_DECREASE);
+        button_start(&TIME_INCREASE);
+    } else {
+        //TODO 保存时间
+        log_i("Saving time...");
+        button_stop(&TIME_DECREASE);
+        button_stop(&TIME_INCREASE);
+    }
+    i++;
 }
 
 //VOLUME_PREV
@@ -179,14 +220,8 @@ void Key_Init(void) {
     button_attach(&TIME_INCREASE, SINGLE_CLICK, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
     button_attach(&TIME_INCREASE, PRESS_REPEAT, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
 
-    button_start(&MODE);
-    button_start(&PLAY_PAUSE);
-    button_start(&VOICE_RESPONSE);
-    button_start(&SET_TIME_ALARM);
-    button_start(&VOLUME_PREV);
-    button_start(&VOLUME_NEXT);
-    button_start(&TIME_DECREASE);
-    button_start(&TIME_INCREASE);
+    /*在此之前, Screen必须被初始化*/
+    Key_Update();
 }
 
 
