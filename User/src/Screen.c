@@ -35,7 +35,6 @@ void Screen_Init(void) {
 void Screen_Switch(ScreenDef newType) {
     log_i("Screen type %d --> %d", Screen_Type, newType);
     Screen_Type = newType;
-    SSD1306_Clear();
 }
 
 ScreenDef Screen_GetType(void) {
