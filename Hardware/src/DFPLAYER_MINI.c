@@ -37,7 +37,7 @@ int isplaying=1;
 
 void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
-    log_d("Send_cmd cmd = %02X p1 = %02X p2 = %02X", cmd, Parameter1, Parameter2);
+    log_d("Send_cmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
 	uint16_t Checksum = Version + Cmd_Len + cmd + Feedback + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 

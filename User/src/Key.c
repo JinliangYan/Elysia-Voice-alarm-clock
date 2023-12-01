@@ -57,7 +57,7 @@ static uint8_t read_button_GPIO(uint8_t button_id)
 
 //MODE
 static void MODE_SINGLE_CLICK_Handler(void *btn) {
-    log_i("MODE_SINGLE_CLICK_Handler Invoked");
+    log_i("Switch mode...");
     Screen_Switch((Screen_GetType() + 1) % SCREEN_TYPE_NUM);
     if (Screen_GetType() == SCREEN_MUSIC)
         Voice_MusicPlay();
@@ -77,7 +77,7 @@ static void KEY_POWER_PLAY_LONG_PRESS_START_Handler(void *btn) {
 
 //VOICE_RESPONSE
 static void VOICE_RESPONSE_SINGLE_CLICK_Handler(void *btn) {
-    log_i("VOICE_RESPONSE_SINGLE_CLICK_Handler Invoked");
+    log_i("Say something...");
     Voice_Invoke();
 }
 
@@ -94,21 +94,21 @@ static void KEY_SET_TIME_ALARM_LONG_PRESS_START_Handler(void *btn) {
 
 //VOLUME_PREV
 static void KEY_VOLUME_PREV_SINGLE_CLICK_Handler(void *btn) {
-    log_i("KEY_VOLUME_PREV_SINGLE_CLICK_Handler Invoked");
+    log_i("Decrease the volume...");
     Voice_VolumeDecrease();
 }
 static void KEY_VOLUME_PREV_LONG_PRESS_START_Handler(void *btn) {
-    log_i("KEY_VOLUME_PREV_LONG_PRESS_START_Handler Invoked");
+    log_i("Previous music...");
     Voice_MusicPrevious();
 }
 
 //VOLUME_NEXT
 static void KEY_VOLUME_NEXT_SINGLE_CLICK_Handler(void *btn) {
-    log_i("KEY_VOLUME_NEXT_SINGLE_CLICK_Handler Invoked");
+    log_i("Increase the volume...");
     Voice_VolumeIncrease();
 }
 static void KEY_VOLUME_NEXT_LONG_PRESS_START_Handler(void *btn) {
-    log_i("KEY_VOLUME_NEXT_LONG_PRESS_START_Handler Invoked");
+    log_i("Next music...");
     Voice_MusicNext();
 }
 
