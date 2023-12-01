@@ -220,7 +220,10 @@ void Key_Init(void) {
     button_attach(&TIME_INCREASE, SINGLE_CLICK, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
     button_attach(&TIME_INCREASE, PRESS_REPEAT, KEY_TIME_INCREASE_SINGLE_CLICK_Handler);
 
-    /*在此之前, Screen必须被初始化*/
+    button_start(&MODE);
+    button_start(&VOLUME_PREV);
+    button_start(&VOLUME_NEXT);
+    /*在此之前, Screen应该被初始化*/
     Key_Update();
 }
 
