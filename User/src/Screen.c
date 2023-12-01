@@ -33,7 +33,7 @@ static ScreenDef Screen_Type = SCREEN_TIME;
 void Screen_Init(void) {
     SSD1306_Init();
     DS18B20_Init();
-    Screen_Update();
+    Screen_Switch(SCREEN_TIME);
 }
 
 void Screen_Switch(ScreenDef newType) {
