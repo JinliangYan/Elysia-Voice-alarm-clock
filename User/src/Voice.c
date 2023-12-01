@@ -191,7 +191,7 @@ void Voice_BirthDay(uint8_t meOrAlysia) {
 
 void Voice_Invoke(void) {
     // 随机选择要触发的函数
-    int randomFunction = Voice_Random(4); // 选择 0 到 4 之间的随机数
+    int randomFunction = Voice_Random(5); // 选择 0 到 5 之间的随机数
 
     // 根据随机数调用相应的函数
     switch (randomFunction) {
@@ -212,6 +212,7 @@ void Voice_Invoke(void) {
             break;
         case 5:
             Voice_BirthDay(0); // 传递 0 表示触发角色生日
+            Voice_BirthDay(1);
             break;
             // 添加其他函数触发的 case，如果有的话
         default:
