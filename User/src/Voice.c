@@ -72,10 +72,6 @@
 #define VOICE_SEASON_SUMMER                       (VOICE_SEASON_BASE + 2)
 #define VOICE_SEASON_SUMMER_NUM                   1    // Number of responses for summer season
 
-/*音乐*/
-#define VOICE_MUSIC_RESOURCE                      80
-#define VOICE_MUSIC_NUM                           2
-
 /* 杂项 */
 #define VOICE_MISC_BASE                           81
 #define VOICE_MISC_CHARACTER_BIRTHDAY             (VOICE_MISC_BASE + 0)
@@ -89,12 +85,16 @@
 #define VOICE_DEFAULT                             VOICE_INTERACTION_CHAT
 #define VOICE_DEFAULT_NUM                         VOICE_INTERACTION_CHAT_NUM
 
+/*音乐*/
+#define VOICE_MUSIC_RESOURCE                      80
+#define VOICE_MUSIC_NUM                           84
+
 #define VOICE_VOLUME_MAX  (30)
 
 static Voice_StatusDef Voice_Status;
 static uint8_t Voice_Volume;
 
-static uint8_t Voice_MusicNow;
+static int8_t Voice_MusicNow = 1;
 
 static void Voice_Say(uint8_t category, uint8_t number) {
     if (Voice_Status == VOICE_OFF)
@@ -266,14 +266,14 @@ void Voice_MusicContinue(void) {
 void Voice_MusicNext(void) {
     log_i("Voice_MusicNext invoked");
     Voice_MusicNow++;
-    if (Voice_MusicNow > VOICE_MUSIC_NUM) Voice_MusicNow = 0;
+    if (Voice_MusicNow > VOICE_MUSIC_NUM) Voice_MusicNow = 1;
     DF_PlayFromFolder(VOICE_MUSIC_RESOURCE, Voice_MusicNow);
 }
 
 void Voice_MusicPrevious(void) {
     log_i("Voice_MusicPrevious invoked");
     Voice_MusicNow--;
-    if (Voice_MusicNow == 0) Voice_MusicNow = VOICE_MUSIC_NUM;
+    if (Voice_MusicNow < 1) Voice_MusicNow = VOICE_MUSIC_NUM;
     DF_PlayFromFolder(VOICE_MUSIC_RESOURCE, Voice_MusicNow);
 }
 
