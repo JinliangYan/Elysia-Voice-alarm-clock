@@ -66,9 +66,14 @@ static void MODE_SINGLE_CLICK_Handler(void *btn) {
 //POWER_PLAY
 static void KEY_POWER_PLAY_SINGLE_CLICK_Handler(void *btn) {
     static uint8_t i;
-    log_i("KEY_POWER_PLAY_SINGLE_CLICK_Handler Invoked");
-    if (i % 2 == 0)     Voice_MusicPause();
-    else                Voice_MusicContinue();
+    if (i % 2 == 0) {
+        log_i("Pause the music...");
+        Voice_MusicPause();
+    } else {
+        log_i("Continue the music...");
+        Voice_MusicContinue();
+    }
+    i++;
 }
 static void KEY_POWER_PLAY_LONG_PRESS_START_Handler(void *btn) {
     log_i("KEY_POWER_PLAY_LONG_PRESS_START_Handler Invoked");
