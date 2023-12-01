@@ -281,6 +281,7 @@ void Voice_MusicPrevious(void) {
 
 void Voice_Init(uint8_t volume) {
 #ifdef USE_HARDWARE_DECODING
+    Voice_Volume = volume;
     DF_Init(volume);
     Voice_Status = VOICE_ON;
 #endif
