@@ -26,4 +26,10 @@ void Voice_VolumeDecrease(void);
 void Voice_ON(void);
 void Voice_OFF(void);
 
+void Voice_MusicPlay(void);
+void Voice_MusicPause(void);
+void Voice_MusicContinue(void);
+void Voice_MusicNext(void);
+void Voice_MusicPrevious(void);
+
 #endif //ElysiaVACLK_VOICE_H

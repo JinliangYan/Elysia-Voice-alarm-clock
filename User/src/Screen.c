@@ -15,10 +15,6 @@
 #define SSD1306_Puts_M(str) SSD1306_Puts(str, &Font_11x18, SSD1306_COLOR_WHITE)
 #define SSD1306_Puts_L(str) SSD1306_Puts(str, &Font_16x26, SSD1306_COLOR_WHITE)
 
-#define SSD1306_Putc_S(ch) SSD1306_Putc(ch, &Font_7x10, SSD1306_COLOR_WHITE)
-#define SSD1306_Putc_M(ch) SSD1306_Putc(ch, &Font_11x18, SSD1306_COLOR_WHITE)
-#define SSD1306_Putc_L(ch) SSD1306_Putc(ch, &Font_16x26, SSD1306_COLOR_WHITE)
-
 const char *Kaomoji[] = {
         "(OwO)",
         "(>_<)",
@@ -33,13 +29,12 @@ static ScreenDef Screen_Type = SCREEN_TIME;
 void Screen_Init(void) {
     SSD1306_Init();
     DS18B20_Init();
-    Screen_Update();
+    Screen_Switch(SCREEN_TIME);
 }
 
 void Screen_Switch(ScreenDef newType) {
     log_i("Screen type %d --> %d", Screen_Type, newType);
     Screen_Type = newType;
-    SSD1306_Clear();
 }
 
 ScreenDef Screen_GetType(void) {
