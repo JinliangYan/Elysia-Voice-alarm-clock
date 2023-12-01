@@ -56,12 +56,6 @@ static void Clock_UserConfig(void) {
     Clock_BirthDay_Alysia[1] = 11;
 }
 
-void Clock_Init(void) {
-    Clock_UserConfig();
-    DS1302_Init();
-    Clock_Update();
-}
-
 void Clock_ReadDate(void) {
     DS1302_Read();
     Clock_Year = DS1302_Time[0];
@@ -118,4 +112,10 @@ uint8_t Clock_IsMyBirthday(void) {
 
 uint8_t Clock_IsAlysiaBirthday(void) {
     return Clock_BirthDay_Alysia[0] == Clock_Month && Clock_BirthDay_Alysia[1] == Clock_Day;
+}
+
+void Clock_Init(void) {
+    Clock_UserConfig();
+    DS1302_Init();
+    Clock_Update();
 }

@@ -9,9 +9,6 @@
 #define LOG_TAG "VOICE"
 #include "elog.h"
 
-#define USE_HARDWARE_DECODING
-//#define USE_SOFTWARE_DECODING
-
 /* 定义语音类别和对应数目 */
 /* 天气 */
 #define VOICE_WEATHER_BASE                        1
@@ -99,13 +96,7 @@ static int8_t Voice_MusicNow = 1;
 static void Voice_Say(uint8_t category, uint8_t number) {
     if (Voice_Status == VOICE_OFF)
         return;
-#ifdef USE_HARDWARE_DECODING
     DF_PlayFromFolder(category, number);
-    log_i("DF_PlayFromFolder(%d, %d) Invoked", category, number);
-#endif
-#ifdef USE_STDPERIPH_DRIVER
-
-#endif
 }
 
 static uint8_t Voice_Random(uint8_t number) {
@@ -214,7 +205,7 @@ void Voice_Invoke(void) {
             Voice_BirthDay(0); // 传递 0 表示触发角色生日
             Voice_BirthDay(1);
             break;
-            // 添加其他函数触发的 case，如果有的话
+        // 添加其他函数触发的 case，如果有的话
         default:
             Voice_Chat();
     }
@@ -280,12 +271,7 @@ void Voice_MusicPrevious(void) {
 ///////////////////////////////////////////////////////////////
 
 void Voice_Init(uint8_t volume) {
-#ifdef USE_HARDWARE_DECODING
     Voice_Volume = volume;
     DF_Init(volume);
     Voice_Status = VOICE_ON;
-#endif
-#ifdef USE_STDPERIPH_DRIVER
-    // Initialize other components if needed
-#endif
 }
