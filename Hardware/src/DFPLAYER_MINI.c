@@ -15,11 +15,12 @@
 
 /*************************************** NO CHANGES AFTER THIS *************************************************/
 
-# define Start_Byte 0x7E
-# define End_Byte   0xEF
-# define Version    0xFF
-# define Cmd_Len    0x06
-# define Feedback   0x00    //If need for Feedback: 0x01,  No Feedback: 0
+# define START_BYTE 0x7E
+# define END_BYTE   0xEF
+# define VERSION    0xFF
+# define CMD_LEN    0x06
+# define FEEDBACK   0x00    //If need for FEEDBACK: 0x01,  No FEEDBACK: 0
+
 
 
 static void DF_serial_Init(void) {
@@ -76,10 +77,10 @@ static void DF_serial_SendArray(uint8_t *Array, uint16_t Length) {
 static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
     log_d("DF_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
-	uint16_t Checksum = Version + Cmd_Len + cmd + Feedback + Parameter1 + Parameter2;
+	uint16_t Checksum = VERSION + CMD_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
-	uint8_t CmdSequence[10] = { Start_Byte, Version, Cmd_Len, cmd, Feedback, Parameter1, Parameter2, (Checksum>>8)&0x00ff, (Checksum&0x00ff), End_Byte};
+	uint8_t CmdSequence[10] = {START_BYTE, VERSION, CMD_LEN, cmd, FEEDBACK, Parameter1, Parameter2, (Checksum >> 8) & 0x00ff, (Checksum & 0x00ff), END_BYTE};
 
     DF_serial_SendArray(CmdSequence, 10);
 }
