@@ -10,18 +10,40 @@
 #define LOG_TAG "DFPLAYER_MINI"
 #include "elog.h"
 
-#define Source      0x02  // TF CARD
+#define SOURCE      0x02  // TF CARD
 
 
 /*************************************** NO CHANGES AFTER THIS *************************************************/
 
-# define START_BYTE 0x7E
-# define END_BYTE   0xEF
-# define VERSION    0xFF
-# define CMD_LEN    0x06
-# define FEEDBACK   0x00    //If need for FEEDBACK: 0x01,  No FEEDBACK: 0
+# define START_BYTE     0x7E
+# define END_BYTE       0xEF
+# define VERSION        0xFF
+#define  DATA_LEN       (6)
+# define PACKET_LEN     (8)
+# define FEEDBACK       0x00    //If need for FEEDBACK: 0x01,  No FEEDBACK: 0
 
 
+/*************************************** 串口USART1 *************************************************/
+
+typedef enum {
+    UART_RECV_IDLE = 0,
+    UART_RECV_VER,
+    UART_RECV_LENTH,
+    UART_RECV_CMD,
+    UART_RECV_FEEDBACK,
+    UART_RECV_DATAH,
+    UART_RECV_DATAL,
+    UART_RECV_CHECKSUMH,
+    UART_RECV_CHECKSUML,
+    UART_RECV_OVER,
+} Serial_RecvStatus;
+
+static uint8_t Serial_TxPacket[PACKET_LEN];
+__attribute__((unused)) static uint8_t Serial_RxPacket[PACKET_LEN];
+static uint8_t Serial_RxFlag;
+static Serial_RecvStatus RxState;
+static uint8_t RecvOver_Flag;
+static uint8_t RecvError_Flag;
 
 static void DF_serial_Init(void) {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
@@ -59,6 +81,8 @@ static void DF_serial_Init(void) {
     NVIC_Init(&NVIC_InitStructure);
 
     USART_Cmd(USART1, ENABLE);
+
+    log_i("The serial of DF is initialize success.");
 }
 
 static void DF_serial_SendByte(uint8_t Byte) {
@@ -74,23 +98,105 @@ static void DF_serial_SendArray(uint8_t *Array, uint16_t Length) {
     }
 }
 
+static void DF_serial_SendPacket(void) {
+    DF_serial_SendByte(START_BYTE);
+    DF_serial_SendArray(Serial_TxPacket, PACKET_LEN);
+    DF_serial_SendByte(END_BYTE);
+    log_e("Send packet: %02X %02X %02X %02X %02X %02X %02X %02X.",
+          Serial_TxPacket[0], Serial_TxPacket[1], Serial_TxPacket[2], Serial_TxPacket[3], Serial_TxPacket[4], Serial_TxPacket[5], Serial_TxPacket[6], Serial_TxPacket[7]);
+}
+
+__attribute__((unused)) void USART1_IRQHandler(void)
+{
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
+    {
+        log_i("USART1_IRQHandler is invoked.");
+        uint8_t RxData = USART_ReceiveData(USART1);
+        log_i("RxData = %02X", RxData);
+
+        switch (RxState) {
+            case UART_RECV_IDLE:
+                if (RxData == START_BYTE)
+                    RxState = UART_RECV_VER;
+                else
+                    RxState = UART_RECV_IDLE;
+                break;
+            case UART_RECV_VER:
+                Serial_RxPacket[0] = RxData;
+                RxState = UART_RECV_LENTH;
+                break;
+            case UART_RECV_LENTH:
+                Serial_RxPacket[1] = RxData;
+                RxState = UART_RECV_CMD;
+                break;
+            case UART_RECV_CMD:
+                Serial_RxPacket[2] = RxData;
+                RxState = UART_RECV_FEEDBACK;
+                break;
+            case UART_RECV_FEEDBACK:
+                Serial_RxPacket[3] = RxData;
+                RxState = UART_RECV_DATAH;
+                break;
+            case UART_RECV_DATAH:
+                Serial_RxPacket[4] = RxData;
+                RxState = UART_RECV_DATAL;
+                break;
+            case UART_RECV_DATAL:
+                Serial_RxPacket[5] = RxData;
+                RxState = UART_RECV_CHECKSUMH;
+                break;
+            case UART_RECV_CHECKSUMH:
+                Serial_RxPacket[6] = RxData;
+                RxState = UART_RECV_CHECKSUML;
+                break;
+            case UART_RECV_CHECKSUML:
+                Serial_RxPacket[7] = RxData;
+                RxState = UART_RECV_OVER;
+                break;
+            case UART_RECV_OVER:
+                if (RxData == END_BYTE) {
+                    RecvOver_Flag = 1;
+                    log_i("Packet is received success: %02X %02X %02X %02X %02X %02X %02X %02X.",
+                          Serial_RxPacket[0], Serial_RxPacket[1], Serial_RxPacket[2], Serial_RxPacket[3], Serial_RxPacket[4], Serial_RxPacket[5], Serial_RxPacket[6], Serial_RxPacket[7]);
+                } else {
+                    RecvError_Flag = 1;
+                }
+                break;
+            default:
+                break;
+        }
+
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+    }
+}
+
+/***************************************************************************************/
+
+
 static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
-    log_d("DF_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
-	uint16_t Checksum = VERSION + CMD_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
+	uint16_t Checksum = VERSION + PACKET_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
-	uint8_t CmdSequence[10] = {START_BYTE, VERSION, CMD_LEN, cmd, FEEDBACK, Parameter1, Parameter2, (Checksum >> 8) & 0x00ff, (Checksum & 0x00ff), END_BYTE};
+    Serial_TxPacket[0] = VERSION;
+    Serial_TxPacket[1] = DATA_LEN;
+    Serial_TxPacket[2] = cmd;
+    Serial_TxPacket[3] = FEEDBACK;
+    Serial_TxPacket[4] = Parameter1;
+    Serial_TxPacket[5] = Parameter2;
+    Serial_TxPacket[6] = (Checksum >> 8) & 0x00ff;
+    Serial_TxPacket[7] = (Checksum & 0x00ff);
 
-    DF_serial_SendArray(CmdSequence, 10);
+    DF_serial_SendPacket();
 }
 
 
 void DF_Init (uint8_t volume) // 0~30
 {
     DF_serial_Init();
-    DF_SendCmd(0x3F, 0x00, Source);
+    DF_SendCmd(0x3F, 0x00, SOURCE);
     DF_SendCmd(0x06, 0x00, volume);
+    log_i("DF mini player is initialize success.");
 }
 
 void DF_SetVolume(uint8_t volume) {
@@ -120,4 +226,21 @@ void DF_PlayFromFolder(uint8_t folder, uint8_t number) {
 
 void DF_LoopFromFolder(uint8_t folder) {
     DF_SendCmd(0x17, 0x00, folder);
+}
+
+
+uint8_t DF_GetFileNumFromFolder(uint8_t folder) {
+    DF_SendCmd(0x4E, 0, 21);
+}
+
+int DF_TEST(void) {
+    extern void Elog_Init(void);
+    Elog_Init();
+    DF_Init(20);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 81);
+
+    while (1) {
+
+    }
+    return 0;
 }
