@@ -6,7 +6,6 @@
  */
 
 #include "stm32f10x.h"
-#include "Serial.h"
 
 #define LOG_TAG "DFPLAYER_MINI"
 #include "elog.h"
@@ -34,6 +33,42 @@ int isplaying=1;
 # define Cmd_Len    0x06
 # define Feedback   0x00    //If need for Feedback: 0x01,  No Feedback: 0
 
+
+static void DF_serial_Init(void) {
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate = 9600;
+    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+    USART_InitStructure.USART_Mode = USART_Mode_Tx;
+    USART_InitStructure.USART_Parity = USART_Parity_No;
+    USART_InitStructure.USART_StopBits = USART_StopBits_1;
+    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+    USART_Init(USART1, &USART_InitStructure);
+
+    USART_Cmd(USART1, ENABLE);
+}
+
+static void DF_serial_SendByte(uint8_t Byte) {
+    USART_SendData(USART1, Byte);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
+        ;
+}
+
+static void Serial_SendArray(uint8_t *Array, uint16_t Length) {
+    uint16_t i;
+    for (i = 0; i < Length; i ++) {
+        DF_serial_SendByte(Array[i]);
+    }
+}
+
 static void Serial_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
     log_d("Serial_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
@@ -53,7 +88,7 @@ void DF_PlayFromStart(void)
 
 void DF_Init (uint8_t volume) // 0~30
 {
-    Serial_Init();
+    DF_serial_Init();
     Serial_SendCmd(0x3F, 0x00, Source);
     Serial_SendCmd(0x06, 0x00, volume);
 }
