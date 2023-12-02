@@ -9,7 +9,6 @@
 #define INC_DFPLAYER_MINI_H_
 
 #include "stm32f10x.h"
-void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2);
 void DF_PlayFromStart(void);
 void DF_Init (uint8_t volume);
 void DF_Next (void);

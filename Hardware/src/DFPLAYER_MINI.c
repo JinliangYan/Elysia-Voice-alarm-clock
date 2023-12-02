@@ -34,9 +34,9 @@ int isplaying=1;
 # define Cmd_Len    0x06
 # define Feedback   0x00    //If need for Feedback: 0x01,  No Feedback: 0
 
-void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
+static void Serial_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
-    log_d("Send_cmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
+    log_d("Serial_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
 	uint16_t Checksum = Version + Cmd_Len + cmd + Feedback + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
@@ -47,48 +47,48 @@ void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 
 void DF_PlayFromStart(void)
 {
-    Send_cmd(0x03,0x00,0x01);
+    Serial_SendCmd(0x03, 0x00, 0x01);
 }
 
 
 void DF_Init (uint8_t volume) // 0~30
 {
     Serial_Init();
-	Send_cmd(0x3F, 0x00, Source);
-	Send_cmd(0x06, 0x00, volume);
+    Serial_SendCmd(0x3F, 0x00, Source);
+    Serial_SendCmd(0x06, 0x00, volume);
 }
 
 void DF_SetVolume(uint8_t volume) {
-    Send_cmd(0x06, 0x00, volume);
+    Serial_SendCmd(0x06, 0x00, volume);
 }
 
 void DF_Next (void)
 {
-	Send_cmd(0x01, 0x00, 0x00);
+    Serial_SendCmd(0x01, 0x00, 0x00);
 }
 
 void DF_Pause (void)
 {
-	Send_cmd(0x0E, 0, 0);
+    Serial_SendCmd(0x0E, 0, 0);
 }
 
 void DF_Continue (void)
 {
-	Send_cmd(0x0D, 0, 0);
+    Serial_SendCmd(0x0D, 0, 0);
 }
 
 void DF_Previous (void)
 {
-	Send_cmd(0x02, 0, 0);
+    Serial_SendCmd(0x02, 0, 0);
 }
 
 void DF_Playback (void)
 {
-	Send_cmd(0x0D, 0, 0);
+    Serial_SendCmd(0x0D, 0, 0);
 }
 
 void DF_Play(uint16_t Num) {
-    Send_cmd(0x12,(uint8_t)(Num << 8),(uint8_t)Num);
+    Serial_SendCmd(0x12, (uint8_t) (Num << 8), (uint8_t) Num);
 }
 
 /**
@@ -99,9 +99,9 @@ void DF_Play(uint16_t Num) {
  * @param number 歌曲名(1 ~ 255)
  */
 void DF_PlayFromFolder(uint8_t folder, uint8_t number) {
-    Send_cmd(0x0F, folder, number);
+    Serial_SendCmd(0x0F, folder, number);
 }
 
 void DF_LoopFromFolder(uint8_t folder) {
-    Send_cmd(0x17, 0x00, folder);
+    Serial_SendCmd(0x17, 0x00, folder);
 }
