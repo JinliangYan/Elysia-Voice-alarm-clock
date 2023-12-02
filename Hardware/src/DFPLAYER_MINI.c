@@ -7,7 +7,6 @@
 
 #include "stm32f10x.h"
 #include "Serial.h"
-#include "Delay.h"
 
 #define LOG_TAG "DFPLAYER_MINI"
 #include "elog.h"
@@ -44,7 +43,6 @@ void Send_cmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 	uint8_t CmdSequence[10] = { Start_Byte, Version, Cmd_Len, cmd, Feedback, Parameter1, Parameter2, (Checksum>>8)&0x00ff, (Checksum&0x00ff), End_Byte};
 
     Serial_SendArray(CmdSequence, 10);
-    Delay_ms(200);
 }
 
 void DF_PlayFromStart(void)
