@@ -57,9 +57,9 @@ static void Serial_SendArray(uint8_t *Array, uint16_t Length) {
     }
 }
 
-static void Serial_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
+static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
-    log_d("Serial_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
+    log_d("DF_SendCmd{cmd = 0x%02X, p1 = %d, p2 = %d}", cmd, Parameter1, Parameter2);
 	uint16_t Checksum = Version + Cmd_Len + cmd + Feedback + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
@@ -72,22 +72,22 @@ static void Serial_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 void DF_Init (uint8_t volume) // 0~30
 {
     DF_serial_Init();
-    Serial_SendCmd(0x3F, 0x00, Source);
-    Serial_SendCmd(0x06, 0x00, volume);
+    DF_SendCmd(0x3F, 0x00, Source);
+    DF_SendCmd(0x06, 0x00, volume);
 }
 
 void DF_SetVolume(uint8_t volume) {
-    Serial_SendCmd(0x06, 0x00, volume);
+    DF_SendCmd(0x06, 0x00, volume);
 }
 
 void DF_Pause (void)
 {
-    Serial_SendCmd(0x0E, 0, 0);
+    DF_SendCmd(0x0E, 0, 0);
 }
 
 void DF_Continue (void)
 {
-    Serial_SendCmd(0x0D, 0, 0);
+    DF_SendCmd(0x0D, 0, 0);
 }
 
 /**
@@ -98,9 +98,9 @@ void DF_Continue (void)
  * @param number 歌曲名(1 ~ 255)
  */
 void DF_PlayFromFolder(uint8_t folder, uint8_t number) {
-    Serial_SendCmd(0x0F, folder, number);
+    DF_SendCmd(0x0F, folder, number);
 }
 
 void DF_LoopFromFolder(uint8_t folder) {
-    Serial_SendCmd(0x17, 0x00, folder);
+    DF_SendCmd(0x17, 0x00, folder);
 }
