@@ -50,7 +50,7 @@ static void DF_serial_SendByte(uint8_t Byte) {
         ;
 }
 
-static void Serial_SendArray(uint8_t *Array, uint16_t Length) {
+static void DF_serial_SendArray(uint8_t *Array, uint16_t Length) {
     uint16_t i;
     for (i = 0; i < Length; i ++) {
         DF_serial_SendByte(Array[i]);
@@ -65,7 +65,7 @@ static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 
 	uint8_t CmdSequence[10] = { Start_Byte, Version, Cmd_Len, cmd, Feedback, Parameter1, Parameter2, (Checksum>>8)&0x00ff, (Checksum&0x00ff), End_Byte};
 
-    Serial_SendArray(CmdSequence, 10);
+    DF_serial_SendArray(CmdSequence, 10);
 }
 
 
