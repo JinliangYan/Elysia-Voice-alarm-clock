@@ -10,22 +10,10 @@
 #define LOG_TAG "DFPLAYER_MINI"
 #include "elog.h"
 
-#define DF_UART USART1
-
 #define Source      0x02  // TF CARD
 
-#define Previous_Key   GPIO_PIN_1
-#define Previous_Port  GPIOA
-#define Pause_Key      GPIO_PIN_2
-#define Pause_Port     GPIOA
-#define Next_Key       GPIO_PIN_3
-#define Next_Port      GPIOA
 
 /*************************************** NO CHANGES AFTER THIS *************************************************/
-
-int ispause =0;
-int isplaying=1;
-
 
 # define Start_Byte 0x7E
 # define End_Byte   0xEF
@@ -80,11 +68,6 @@ static void Serial_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
     Serial_SendArray(CmdSequence, 10);
 }
 
-void DF_PlayFromStart(void)
-{
-    Serial_SendCmd(0x03, 0x00, 0x01);
-}
-
 
 void DF_Init (uint8_t volume) // 0~30
 {
@@ -97,11 +80,6 @@ void DF_SetVolume(uint8_t volume) {
     Serial_SendCmd(0x06, 0x00, volume);
 }
 
-void DF_Next (void)
-{
-    Serial_SendCmd(0x01, 0x00, 0x00);
-}
-
 void DF_Pause (void)
 {
     Serial_SendCmd(0x0E, 0, 0);
@@ -110,20 +88,6 @@ void DF_Pause (void)
 void DF_Continue (void)
 {
     Serial_SendCmd(0x0D, 0, 0);
-}
-
-void DF_Previous (void)
-{
-    Serial_SendCmd(0x02, 0, 0);
-}
-
-void DF_Playback (void)
-{
-    Serial_SendCmd(0x0D, 0, 0);
-}
-
-void DF_Play(uint16_t Num) {
-    Serial_SendCmd(0x12, (uint8_t) (Num << 8), (uint8_t) Num);
 }
 
 /**
