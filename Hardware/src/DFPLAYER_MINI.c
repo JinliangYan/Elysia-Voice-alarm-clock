@@ -40,7 +40,6 @@ typedef enum {
 
 static uint8_t Serial_TxPacket[PACKET_LEN];
 __attribute__((unused)) static uint8_t Serial_RxPacket[PACKET_LEN];
-static uint8_t Serial_RxFlag;
 static Serial_RecvStatus RxState;
 static uint8_t RecvOver_Flag;
 static uint8_t RecvError_Flag;
