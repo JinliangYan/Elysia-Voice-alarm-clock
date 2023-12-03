@@ -175,7 +175,7 @@ __attribute__((unused)) void USART1_IRQHandler(void)
 
 static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
-	uint16_t Checksum = VERSION + PACKET_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
+	uint16_t Checksum = VERSION + DATA_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
     Serial_TxPacket[0] = VERSION;
