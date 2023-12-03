@@ -101,7 +101,7 @@ static void DF_serial_SendPacket(void) {
     DF_serial_SendByte(START_BYTE);
     DF_serial_SendArray(Serial_TxPacket, PACKET_LEN);
     DF_serial_SendByte(END_BYTE);
-    log_e("Send packet: %02X %02X %02X %02X %02X %02X %02X %02X.",
+    log_i("Send packet: %02X %02X %02X %02X %02X %02X %02X %02X.",
           Serial_TxPacket[0], Serial_TxPacket[1], Serial_TxPacket[2], Serial_TxPacket[3], Serial_TxPacket[4], Serial_TxPacket[5], Serial_TxPacket[6], Serial_TxPacket[7]);
 }
 
