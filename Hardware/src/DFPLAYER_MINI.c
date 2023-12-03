@@ -156,6 +156,7 @@ __attribute__((unused)) void USART1_IRQHandler(void)
             case UART_RECV_OVER:
                 if (RxData == END_BYTE) {
                     RecvOver_Flag = 1;
+                    RxState = UART_RECV_IDLE;
                     log_i("Packet is received success: %02X %02X %02X %02X %02X %02X %02X %02X.",
                           Serial_RxPacket[0], Serial_RxPacket[1], Serial_RxPacket[2], Serial_RxPacket[3], Serial_RxPacket[4], Serial_RxPacket[5], Serial_RxPacket[6], Serial_RxPacket[7]);
                 } else {
@@ -230,7 +231,8 @@ void DF_LoopFromFolder(uint8_t folder) {
 
 
 uint8_t DF_GetFileNumFromFolder(uint8_t folder) {
-    DF_SendCmd(0x4E, 0, 21);
+    DF_SendCmd(0x4E, 0, folder);
+    return (Serial_RxPacket[4] << 4) | Serial_RxPacket[5];
 }
 
 int DF_TEST(void) {
