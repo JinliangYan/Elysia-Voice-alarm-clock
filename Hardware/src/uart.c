@@ -240,7 +240,7 @@ void uart_init(void) {
     USART_Init(USART1, &usart_init_structure);
 
     /* Enable IDLE interrupt */
-    USART_ITConfig(USART1, USART_IT_IDLE, DISABLE);
+//    USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
 
     /* USART interrupt */
     NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
@@ -285,7 +285,7 @@ void DMA1_Channel5_IRQHandler(void) {
  */
 void USART1_IRQHandler(void) {
     /* Check for IDLE line interrupt */
-    if (USART_GetITStatus(USART1, USART_IT_IDLE)) {
+    if (USART_GetITStatus(USART1, USART_IT_IDLE) == SET) {
         log_d("USART_IT_IDLE Interrupt");
         USART_ClearITPendingBit(USART1, USART_IT_IDLE);        /* Clear IDLE line flag */
         uart_rx_check();                                                       /* Check for data to process */
