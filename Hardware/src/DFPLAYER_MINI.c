@@ -6,9 +6,11 @@
  */
 
 #include "stm32f10x.h"
+#include "uart.h"
 
 #define LOG_TAG "DFPLAYER_MINI"
 #include "elog.h"
+#include "Delay.h"
 
 #define SOURCE      0x02  // TF CARD
 
@@ -23,178 +25,41 @@
 # define FEEDBACK       0x00    //If need for FEEDBACK: 0x01,  No FEEDBACK: 0
 
 
-/*************************************** 串口USART1 *************************************************/
+uint8_t uart_tx_packet[PACKET_LEN];
+uint8_t uart_rx_packet[PACKET_LEN];
 
-typedef enum {
-    UART_RECV_IDLE = 0,
-    UART_RECV_VER,
-    UART_RECV_LENTH,
-    UART_RECV_CMD,
-    UART_RECV_FEEDBACK,
-    UART_RECV_DATAH,
-    UART_RECV_DATAL,
-    UART_RECV_CHECKSUMH,
-    UART_RECV_CHECKSUML,
-    UART_RECV_OVER,
-} Serial_RecvStatus;
-
-static uint8_t Serial_TxPacket[PACKET_LEN];
-__attribute__((unused)) static uint8_t Serial_RxPacket[PACKET_LEN];
-static Serial_RecvStatus RxState;
-static uint8_t RecvOver_Flag;
-static uint8_t RecvError_Flag;
-
-static void DF_serial_Init(void) {
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-
-    GPIO_InitTypeDef GPIO_InitStructure;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    USART_InitTypeDef USART_InitStructure;
-    USART_InitStructure.USART_BaudRate = 9600;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;
-    USART_InitStructure.USART_Parity = USART_Parity_No;
-    USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    USART_Init(USART1, &USART_InitStructure);
-
-    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-
-    NVIC_InitTypeDef NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-    NVIC_Init(&NVIC_InitStructure);
-
-    USART_Cmd(USART1, ENABLE);
-
-    log_i("The serial of DF is initialize success.");
-}
-
-static void DF_serial_SendByte(uint8_t Byte) {
-    USART_SendData(USART1, Byte);
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)
-        ;
-}
-
-static void DF_serial_SendArray(uint8_t *Array, uint16_t Length) {
-    uint16_t i;
-    for (i = 0; i < Length; i ++) {
-        DF_serial_SendByte(Array[i]);
-    }
-}
-
-static void DF_serial_SendPacket(void) {
-    DF_serial_SendByte(START_BYTE);
-    DF_serial_SendArray(Serial_TxPacket, PACKET_LEN);
-    DF_serial_SendByte(END_BYTE);
+static void DF_SendPacket(void) {
+    uart_send_byte(START_BYTE);
+    uart_send_bytes(uart_tx_packet, PACKET_LEN);
+    uart_send_byte(END_BYTE);
     log_i("Send packet: %02X %02X %02X %02X %02X %02X %02X %02X.",
-          Serial_TxPacket[0], Serial_TxPacket[1], Serial_TxPacket[2], Serial_TxPacket[3], Serial_TxPacket[4], Serial_TxPacket[5], Serial_TxPacket[6], Serial_TxPacket[7]);
+          uart_tx_packet[0], uart_tx_packet[1], uart_tx_packet[2], uart_tx_packet[3], uart_tx_packet[4], uart_tx_packet[5], uart_tx_packet[6], uart_tx_packet[7]);
 }
-
-__attribute__((unused)) void USART1_IRQHandler(void)
-{
-    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
-    {
-        log_i("USART1_IRQHandler is invoked.");
-        uint8_t RxData = USART_ReceiveData(USART1);
-        log_i("RxData = %02X", RxData);
-
-        switch (RxState) {
-            case UART_RECV_IDLE:
-                if (RxData == START_BYTE)
-                    RxState = UART_RECV_VER;
-                else
-                    RxState = UART_RECV_IDLE;
-                break;
-            case UART_RECV_VER:
-                Serial_RxPacket[0] = RxData;
-                RxState = UART_RECV_LENTH;
-                break;
-            case UART_RECV_LENTH:
-                Serial_RxPacket[1] = RxData;
-                RxState = UART_RECV_CMD;
-                break;
-            case UART_RECV_CMD:
-                Serial_RxPacket[2] = RxData;
-                RxState = UART_RECV_FEEDBACK;
-                break;
-            case UART_RECV_FEEDBACK:
-                Serial_RxPacket[3] = RxData;
-                RxState = UART_RECV_DATAH;
-                break;
-            case UART_RECV_DATAH:
-                Serial_RxPacket[4] = RxData;
-                RxState = UART_RECV_DATAL;
-                break;
-            case UART_RECV_DATAL:
-                Serial_RxPacket[5] = RxData;
-                RxState = UART_RECV_CHECKSUMH;
-                break;
-            case UART_RECV_CHECKSUMH:
-                Serial_RxPacket[6] = RxData;
-                RxState = UART_RECV_CHECKSUML;
-                break;
-            case UART_RECV_CHECKSUML:
-                Serial_RxPacket[7] = RxData;
-                RxState = UART_RECV_OVER;
-                break;
-            case UART_RECV_OVER:
-                if (RxData == END_BYTE) {
-                    RecvOver_Flag = 1;
-                    RxState = UART_RECV_IDLE;
-                    log_i("Packet is received success: %02X %02X %02X %02X %02X %02X %02X %02X.",
-                          Serial_RxPacket[0], Serial_RxPacket[1], Serial_RxPacket[2], Serial_RxPacket[3], Serial_RxPacket[4], Serial_RxPacket[5], Serial_RxPacket[6], Serial_RxPacket[7]);
-                } else {
-                    RecvError_Flag = 1;
-                }
-                break;
-            default:
-                break;
-        }
-
-        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-    }
-}
-
-/***************************************************************************************/
-
 
 static void DF_SendCmd (uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2)
 {
 	uint16_t Checksum = VERSION + DATA_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
 	Checksum = 0-Checksum;
 
-    Serial_TxPacket[0] = VERSION;
-    Serial_TxPacket[1] = DATA_LEN;
-    Serial_TxPacket[2] = cmd;
-    Serial_TxPacket[3] = FEEDBACK;
-    Serial_TxPacket[4] = Parameter1;
-    Serial_TxPacket[5] = Parameter2;
-    Serial_TxPacket[6] = (Checksum >> 8) & 0x00ff;
-    Serial_TxPacket[7] = (Checksum & 0x00ff);
+    uart_tx_packet[0] = VERSION;
+    uart_tx_packet[1] = DATA_LEN;
+    uart_tx_packet[2] = cmd;
+    uart_tx_packet[3] = FEEDBACK;
+    uart_tx_packet[4] = Parameter1;
+    uart_tx_packet[5] = Parameter2;
+    uart_tx_packet[6] = (Checksum >> 8) & 0x00ff;
+    uart_tx_packet[7] = (Checksum & 0x00ff);
 
-    DF_serial_SendPacket();
+    DF_SendPacket();
 }
 
 
 void DF_Init (uint8_t volume) // 0~30
 {
-    DF_serial_Init();
+    uart_init();
     DF_SendCmd(0x3F, 0x00, SOURCE);
+    /* Wait for initialization to complete */
+    Delay_s(2);
     DF_SendCmd(0x06, 0x00, volume);
     log_i("DF mini player is initialize success.");
 }
@@ -231,15 +96,27 @@ void DF_LoopFromFolder(uint8_t folder) {
 
 uint8_t DF_GetFileNumFromFolder(uint8_t folder) {
     DF_SendCmd(0x4E, 0, folder);
-    return (Serial_RxPacket[4] << 4) | Serial_RxPacket[5];
+    Delay_ms(200);
+    return (uart_rx_packet[5] << 4) | uart_rx_packet[6];
 }
 
+/*------------------ DEBUG --------------------------*/
 int DF_TEST(void) {
     extern void Elog_Init(void);
     Elog_Init();
+    log_i("DF_TEST");
     DF_Init(20);
-    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 81);
-
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
     while (1) {
 
     }

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "nvic.h"
 #include "Screen.h"
 #include "Clock.h"
 #include "Voice.h"
@@ -22,6 +23,7 @@ int main() {
 }
 
 void System_Init(void) {
+    nvic_init();
     Timer3_Init();
     Key_Init();
     Clock_Init();
