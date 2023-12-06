@@ -23,14 +23,9 @@ void Timer3_Init(void) {
     //使能中断
     TIM_ITConfig(TIM3,TIM_IT_Update, ENABLE);
 
-    //配置NVIC
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-    NVIC_InitTypeDef NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-    NVIC_Init(&NVIC_InitStructure);
+    /* TIM3_IRQn interrupt configuration */
+    NVIC_SetPriority(TIM3_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
+    NVIC_EnableIRQ(TIM3_IRQn);
 
     //启动定时器
     TIM_Cmd(TIM3, ENABLE);

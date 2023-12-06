@@ -29,7 +29,7 @@
 #ifndef __ELOG_H__
 #define __ELOG_H__
 
-#include "elog_cfg.h"
+#include "../../config/elog_cfg.h"
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
