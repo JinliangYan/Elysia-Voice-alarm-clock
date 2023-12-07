@@ -339,6 +339,7 @@ USART1_IRQHandler(void) {
     /* Implement other events when needed */
 }
 
+#if defined(DEBUG)
 void
 uart_test(void) {
     extern void elog_init_(void);
@@ -349,3 +350,4 @@ uart_test(void) {
     uart_send_bytes(bytes, 10);
     while (true) {}
 }
+#endif  /* DEBUG */

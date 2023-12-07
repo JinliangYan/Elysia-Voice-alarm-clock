@@ -129,7 +129,7 @@ df_get_file_num_from_folder(uint8_t folder) {
     return (uart_rx_packet[5] << 4) | uart_rx_packet[6];
 }
 
-/*------------------ DEBUG --------------------------*/
+#if defined(DEBUG)
 int
 df_test(void) {
     extern void elog_init_(void);
@@ -151,3 +151,4 @@ df_test(void) {
     while (1) {}
     return 0;
 }
+#endif /* DEBUG */
