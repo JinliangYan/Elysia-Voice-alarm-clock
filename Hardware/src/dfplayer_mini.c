@@ -39,16 +39,14 @@
 #include "delay.h"
 #include "elog.h"
 
-#define SOURCE     0x02 // TF CARD
-
-/*************************************** NO CHANGES AFTER THIS *************************************************/
+#define SOURCE     0x02 /* TF CARD */
 
 #define START_BYTE 0x7E
 #define END_BYTE   0xEF
 #define VERSION    0xFF
 #define DATA_LEN   (6)
 #define PACKET_LEN (8)
-#define FEEDBACK   0x00 //If need for FEEDBACK: 0x01,  No FEEDBACK: 0
+#define FEEDBACK   0x00 /* If we need for FEEDBACK: 0x01,  No FEEDBACK: 0 */
 
 uint8_t uart_tx_packet[PACKET_LEN];
 uint8_t uart_rx_packet[PACKET_LEN];
@@ -107,12 +105,13 @@ df_continue(void) {
 }
 
 /**
- * @brief 播放指定文件夹下的歌曲
- * @note 文件夹@ref folder 需要以两位数字命名, 如00, 01, ...
- *       歌曲@ref number 需要以三位数字为前缀命名, 如000, 001, ...
- * @param folder 文件夹名(1 ~ 99)
- * @param number 歌曲名(1 ~ 255)
+ * \brief       Play a song from a specified folder
+ * \param       folder Folder name (1 ~ 99)
+ * \note        The folder should be named with two-digit numbers, such as 00, 01, ...
+ * \param       number Song name (1 ~ 255)
+ * \note        The song number should be prefixed with three-digit numbers, such as 000, 001, ...
  */
+
 void
 df_play_from_folder(uint8_t folder, uint8_t number) {
     df_send_cmd(0x0F, folder, number);
