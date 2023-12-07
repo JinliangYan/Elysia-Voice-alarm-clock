@@ -39,77 +39,75 @@
 #define LOG_TAG "VOICE"
 #include "elog.h"
 
-#define USE_HARDWARE_DECODING
-//#define USE_SOFTWARE_DECODING
-
 /* 定义语音类别和对应数目 */
 /* 天气 */
-#define VOICE_WEATHER_BASE                1
-#define VOICE_WEATHER_RAIN                (VOICE_WEATHER_BASE + 0)
+#define VOICE_WEATHER_BASE                0
+#define VOICE_WEATHER_RAIN                (VOICE_WEATHER_BASE + 1)
 #define VOICE_WEATHER_RAIN_NUM            2 // Number of rainy weather responses
-#define VOICE_WEATHER_SUNNY               (VOICE_WEATHER_BASE + 1)
+#define VOICE_WEATHER_SUNNY               (VOICE_WEATHER_BASE + 2)
 #define VOICE_WEATHER_SUNNY_NUM           2 // Number of sunny weather responses
-#define VOICE_WEATHER_COOL_DOWN           (VOICE_WEATHER_BASE + 2)
+#define VOICE_WEATHER_COOL_DOWN           (VOICE_WEATHER_BASE + 3)
 #define VOICE_WEATHER_COOL_DOWN_NUM       1 // Number of cool-down weather responses
 
 /* 情景 */
-#define VOICE_SCENE_BASE                  11
-#define VOICE_SCENE_REST_TIME             (VOICE_SCENE_BASE + 0)
+#define VOICE_SCENE_BASE                  10
+#define VOICE_SCENE_REST_TIME             (VOICE_SCENE_BASE + 1)
 #define VOICE_SCENE_REST_TIME_NUM         7 // Number of responses for rest time scene
-#define VOICE_SCENE_TASK_SET              (VOICE_SCENE_BASE + 1)
+#define VOICE_SCENE_TASK_SET              (VOICE_SCENE_BASE + 2)
 #define VOICE_SCENE_TASK_SET_NUM          1 // Number of responses for task set scene
-#define VOICE_SCENE_TASK_ACCOMPLISHED     (VOICE_SCENE_BASE + 2)
+#define VOICE_SCENE_TASK_ACCOMPLISHED     (VOICE_SCENE_BASE + 3)
 #define VOICE_SCENE_TASK_ACCOMPLISHED_NUM 4 // Number of responses for task accomplished scene
-#define VOICE_SCENE_GREETING              (VOICE_SCENE_BASE + 3)
+#define VOICE_SCENE_GREETING              (VOICE_SCENE_BASE + 4)
 #define VOICE_SCENE_GREETING_NUM          9 // Number of responses for greeting scene
-#define VOICE_SCENE_WAKE_UP               (VOICE_SCENE_BASE + 4)
+#define VOICE_SCENE_WAKE_UP               (VOICE_SCENE_BASE + 5)
 #define VOICE_SCENE_WAKE_UP_NUM           2 // Number of responses for wake-up scene
-#define VOICE_SCENE_HANG_OUT              (VOICE_SCENE_BASE + 5)
+#define VOICE_SCENE_HANG_OUT              (VOICE_SCENE_BASE + 6)
 #define VOICE_SCENE_HANG_OUT_NUM          5 // Number of responses for hang-out scene
-#define VOICE_SCENE_FAILURE               (VOICE_SCENE_BASE + 6)
+#define VOICE_SCENE_FAILURE               (VOICE_SCENE_BASE + 7)
 #define VOICE_SCENE_FAILURE_NUM           1 // Number of responses for failure scene
 
 /* 互动 */
-#define VOICE_INTERACTION_BASE            21
-#define VOICE_INTERACTION_CHAT            (VOICE_INTERACTION_BASE + 0)
+#define VOICE_INTERACTION_BASE            20
+#define VOICE_INTERACTION_CHAT            (VOICE_INTERACTION_BASE + 1)
 #define VOICE_INTERACTION_CHAT_NUM        84 // Number of chat responses
-#define VOICE_INTERACTION_EAT             (VOICE_INTERACTION_BASE + 1)
+#define VOICE_INTERACTION_EAT             (VOICE_INTERACTION_BASE + 2)
 #define VOICE_INTERACTION_EAT_NUM         5 // Number of responses for eating interaction
-#define VOICE_INTERACTION_LIFT            (VOICE_INTERACTION_BASE + 2)
+#define VOICE_INTERACTION_LIFT            (VOICE_INTERACTION_BASE + 3)
 #define VOICE_INTERACTION_LIFT_NUM        2 // Number of responses for lifting interaction
-#define VOICE_INTERACTION_NEW_CLOTHES     (VOICE_INTERACTION_BASE + 3)
+#define VOICE_INTERACTION_NEW_CLOTHES     (VOICE_INTERACTION_BASE + 4)
 #define VOICE_INTERACTION_NEW_CLOTHES_NUM 7 // Number of responses for new clothes interaction
-#define VOICE_INTERACTION_SHAKE           (VOICE_INTERACTION_BASE + 4)
+#define VOICE_INTERACTION_SHAKE           (VOICE_INTERACTION_BASE + 5)
 #define VOICE_INTERACTION_SHAKE_NUM       8 // Number of responses for shaking interaction
-#define VOICE_INTERACTION_THANKS          (VOICE_INTERACTION_BASE + 5)
+#define VOICE_INTERACTION_THANKS          (VOICE_INTERACTION_BASE + 6)
 #define VOICE_INTERACTION_THANKS_NUM      3 // Number of responses for thanks interaction
 
 /* 时间 */
-#define VOICE_TIME_BASE                   31
-#define VOICE_TIME_MORNING_GREETING       (VOICE_TIME_BASE + 0)
+#define VOICE_TIME_BASE                   30
+#define VOICE_TIME_MORNING_GREETING       (VOICE_TIME_BASE + 1)
 #define VOICE_TIME_MORNING_GREETING_NUM   7 // Number of morning greeting responses
-#define VOICE_TIME_EVENING                (VOICE_TIME_BASE + 1)
+#define VOICE_TIME_EVENING                (VOICE_TIME_BASE + 2)
 #define VOICE_TIME_EVENING_NUM            5 // Number of evening responses
-#define VOICE_TIME_MIDNIGHT               (VOICE_TIME_BASE + 2)
+#define VOICE_TIME_MIDNIGHT               (VOICE_TIME_BASE + 3)
 #define VOICE_TIME_MIDNIGHT_NUM           2 // Number of midnight responses
 
 /* 季节 */
-#define VOICE_SEASON_BASE                 41
-#define VOICE_SEASON_WINTER               (VOICE_SEASON_BASE + 0)
+#define VOICE_SEASON_BASE                 40
+#define VOICE_SEASON_WINTER               (VOICE_SEASON_BASE + 1)
 #define VOICE_SEASON_WINTER_NUM           2 // Number of responses for winter season
-#define VOICE_SEASON_AUTUMN               (VOICE_SEASON_BASE + 1)
+#define VOICE_SEASON_AUTUMN               (VOICE_SEASON_BASE + 2)
 #define VOICE_SEASON_AUTUMN_NUM           1 // Number of responses for autumn season
-#define VOICE_SEASON_SUMMER               (VOICE_SEASON_BASE + 2)
+#define VOICE_SEASON_SUMMER               (VOICE_SEASON_BASE + 3)
 #define VOICE_SEASON_SUMMER_NUM           1 // Number of responses for summer season
 
 /* 杂项 */
-#define VOICE_MISC_BASE                   81
-#define VOICE_MISC_CHARACTER_BIRTHDAY     (VOICE_MISC_BASE + 0)
+#define VOICE_MISC_BASE                   80
+#define VOICE_MISC_CHARACTER_BIRTHDAY     (VOICE_MISC_BASE + 1)
 #define VOICE_MISC_CHARACTER_BIRTHDAY_NUM 2 // Number of responses for character birthday
-#define VOICE_MISC_BIRTHDAY               (VOICE_MISC_BASE + 1)
+#define VOICE_MISC_BIRTHDAY               (VOICE_MISC_BASE + 2)
 #define VOICE_MISC_BIRTHDAY_NUM           2 // Number of responses for general birthday
-#define VOICE_MISC_MONDAY                 (VOICE_MISC_BASE + 2)
+#define VOICE_MISC_MONDAY                 (VOICE_MISC_BASE + 3)
 #define VOICE_MISC_MONDAY_NUM             1 // Number of responses for Monday
+
 
 /* 默认 */
 #define VOICE_DEFAULT                     VOICE_INTERACTION_CHAT
@@ -131,13 +129,8 @@ voice_say(uint8_t category, uint8_t number) {
     if (voice_status == VOICE_OFF) {
         return;
     }
-#ifdef USE_HARDWARE_DECODING
     df_play_from_folder(category, number);
     log_i("df_play_from_folder(%d, %d) Invoked", category, number);
-#endif
-#ifdef USE_STDPERIPH_DRIVER
-
-#endif
 }
 
 static uint8_t
@@ -331,12 +324,7 @@ voice_music_previous(void) {
 
 void
 voice_init(uint8_t volume) {
-#ifdef USE_HARDWARE_DECODING
     voice_volume = volume;
     df_init(volume);
     voice_status = VOICE_ON;
-#endif
-#ifdef USE_STDPERIPH_DRIVER
-    // Initialize other components if needed
-#endif
 }
