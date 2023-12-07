@@ -4,10 +4,10 @@
 #include "Clock.h"
 #include "Voice.h"
 #include "Key.h"
+#include "Timer3.h"
 
 #define LOG_TAG "MAIN"
 #include "elog.h"
-#include "Timer3.h"
 
 void System_Init(void);
 void Elog_Init(void);
@@ -23,12 +23,12 @@ int main() {
 }
 
 void System_Init(void) {
+    Voice_Init(20);
     nvic_init();
     Timer3_Init();
     Key_Init();
     Clock_Init();
     Screen_Init();
-    Voice_Init(20);
 }
 
 void Elog_Init(void) {

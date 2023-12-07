@@ -104,7 +104,7 @@ uint8_t DF_GetFileNumFromFolder(uint8_t folder) {
 int DF_TEST(void) {
     extern void Elog_Init(void);
     Elog_Init();
-    log_i("DF_TEST");
+    log_d("DF_TEST");
     DF_Init(20);
     ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
     ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
@@ -117,6 +117,7 @@ int DF_TEST(void) {
     ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
     ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
     ELOG_ASSERT(DF_GetFileNumFromFolder(21) == 84);
+    log_d("TEST PASSED!");
     while (1) {
 
     }
