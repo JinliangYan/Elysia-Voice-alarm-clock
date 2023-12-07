@@ -1,37 +1,41 @@
 #include <stdio.h>
+#include "clock.h"
+#include "key.h"
+#include "screen.h"
+#include "timer3.h"
+#include "voice.h"
 #include "nvic.h"
-#include "Screen.h"
-#include "Clock.h"
-#include "Voice.h"
-#include "Key.h"
-#include "Timer3.h"
 
 #define LOG_TAG "MAIN"
 #include "elog.h"
 
-void System_Init(void);
-void Elog_Init(void);
-int main() {
-    Elog_Init();
+void system_init(void);
+void elog_init_(void);
 
-    System_Init();
+int
+main() {
+    elog_init_();
+
+    system_init();
     while (1) {
-        Clock_Update();
-        Screen_Update();
+        clock_update();
+        screen_update();
     }
     return 0;
 }
 
-void System_Init(void) {
-    Voice_Init(20);
+void
+system_init(void) {
+    voice_init(20);
     nvic_init();
-    Timer3_Init();
-    Key_Init();
-    Clock_Init();
-    Screen_Init();
+    timer3_init();
+    key_init();
+    clock_init();
+    screen_init();
 }
 
-void Elog_Init(void) {
+void
+elog_init_(void) {
     /* close printf buffer */
     setbuf(stdout, NULL);
     /* initialize EasyLogger */

@@ -2,9 +2,10 @@
 // Created by Jinliang on 11/12/2023.
 //
 
-#include "Counter.h"
+#include "counter.h"
 
-void Counter_Init(void) {
+void
+counter_init(void) {
     //开启时钟
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
@@ -17,17 +18,19 @@ void Counter_Init(void) {
     TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
     TIM_TimeBaseInitStructure.TIM_Period = 10000 - 1;
     TIM_TimeBaseInitStructure.TIM_Prescaler = 7200 - 1;
-    TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;    //基本定时器无，随便设为0
+    TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0; //基本定时器无，随便设为0
     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStructure);
 
     //启动定时器
     TIM_Cmd(TIM2, ENABLE);
 }
 
-uint16_t Counter_Get(void) {
+uint16_t
+counter_get(void) {
     return TIM_GetCounter(TIM2);
 }
 
-void Counter_Reset(void) {
+void
+counter_reset(void) {
     TIM_SetCounter(TIM2, 0);
 }

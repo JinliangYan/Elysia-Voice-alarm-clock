@@ -6,8 +6,8 @@
 #define ElysiaVACLK_DS18B20_H
 
 #include "stm32f10x.h"
-void DS18B20_ConvertT();
-float DS18B20_ReadT();
-void DS18B20_Init(void);
+void ds18b20_convert_t();
+float ds18b20_read_t();
+void ds18b20_init(void);
 
 #endif //ElysiaVACLK_DS18B20_H

@@ -18,6 +18,6 @@ typedef enum Key_KeyDef {
     KEY_TIME_INCREASE,
 } Key_KeyDef;
 
-void Key_Init(void);
+void key_init(void);
 
 #endif //ElysiaVAC_KEY_H
