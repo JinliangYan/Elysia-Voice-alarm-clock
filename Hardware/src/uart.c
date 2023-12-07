@@ -18,22 +18,27 @@
 void uart_rx_check(void);
 void uart_process_data(const void* data, size_t len);
 
-#define PACKET_LEN 10
+#define PACKET_LEN (10)
 extern uint8_t uart_rx_packet[PACKET_LEN];
 
 /**
- * @brief           Calculate length of statically allocated array
+ * \brief           Calculate length of statically allocated array
  */
 #define ARRAY_LEN(x) (sizeof(x) / sizeof((x)[0]))
 
 /**
- * @brief           USART RX buffer for DMA to transfer every received byte
- * @note            Contains raw data that are about to be processed by different events
+ * \brief           Current data index processed by \ref uart_process_data()
+ */
+static int process_idx;
+
+/**
+ * \brief           USART RX buffer for DMA to transfer every received byte
+ * \note            Contains raw data that are about to be processed by different events
  */
 uint8_t uart_rx_dma_buffer[DMA_BUF_SIZE];
 
 /**
- * @brief           Check for new data received with DMA
+ * \brief           Check for new data received with DMA
  *
  * User must select context to call this function from:
  * - Only interrupts (DMA HT, DMA TC, UART IDLE) with same preemption priority level
@@ -115,8 +120,8 @@ uart_rx_check(void) {
 }
 
 /**
- * @brief       UART send a single byte
- * @param       byte: byte to send
+ * \brief       UART send a single byte
+ * \param       byte: byte to send
  */
 void
 uart_send_byte(uint8_t byte) {
@@ -125,9 +130,9 @@ uart_send_byte(uint8_t byte) {
 }
 
 /**
- * @brief               UART send bytes
- * @param               bytes:Bytes array to send
- * @param               len:Length of bytes array
+ * \brief               UART send bytes
+ * \param               bytes:Bytes array to send
+ * \param               len:Length of bytes array
  */
 void
 uart_send_bytes(const uint8_t bytes[], size_t len) {
@@ -137,16 +142,14 @@ uart_send_bytes(const uint8_t bytes[], size_t len) {
 }
 
 /**
- * @brief           Process received data over UART
- * @note            Either process them directly or copy to other bigger buffer
- * @param[in]       data: Data to process
- * @param[in]       len: Length in units of bytes
+ * \brief           Process received data over UART
+ * \note            Either process them directly or copy to other bigger buffer
+ * \param[in]       data: Data to process
+ * \param[in]       len: Length in units of bytes
  */
 void
 uart_process_data(const void* data, size_t len) {
     const uint8_t* d = data;
-    static int i = 0;
-
     /*
      * This function is called on DMA TC or HT events, and on UART IDLE (if enabled) event.
      *
@@ -154,18 +157,14 @@ uart_process_data(const void* data, size_t len) {
      * Check ringbuff RX-based example for implementation with TX & RX DMA transfer.
      */
 
-    for (; len > 0; --len, ++d) {
-        if (i >= PACKET_LEN) {
-            i = 0;
-        }
-        uart_rx_packet[i] = *d;
-        i++;
+    for (; len > 0; --len, ++d, ++process_idx) {
+        uart_rx_packet[process_idx] = *d;
     }
 }
 
 /**
- * @brief           Send string to USART
- * @param[in]       str: String to send
+ * \brief           Send string to USART
+ * \param[in]       str: String to send
  */
 void
 uart_send_string(const char* str) {
@@ -208,10 +207,11 @@ uart_dma_init(void) {
 }
 
 /**
- * @brief           USART1 Initialization Function
+ * \brief           USART1 Initialization Function
  */
 void
 uart_init(void) {
+    process_idx = 0;
     /* Peripheral clock enable */
     RCC_APB2PeriphClockCmd(UART_GPIO_RCC, ENABLE);
     RCC_APB2PeriphClockCmd(UART_RCC, ENABLE);
@@ -257,10 +257,15 @@ uart_init(void) {
     USART_Cmd(USART1, ENABLE);
 }
 
+void
+uart_receive_err_handler(void) {
+    log_e("err");
+}
+
 /* Interrupt handlers here */
 
 /**
- * @brief DMA1 channel5 interrupt handler for USART1 RX
+ * \brief DMA1 channel5 interrupt handler for USART1 RX
  */
 void
 DMA1_Channel5_IRQHandler(void) {
@@ -280,17 +285,24 @@ DMA1_Channel5_IRQHandler(void) {
 }
 
 /**
- * @brief           USART1 global interrupt handler
+ * \brief           USART1 global interrupt handler
  */
 void
 USART1_IRQHandler(void) {
     /* Check for IDLE line interrupt */
     if (USART_GetITStatus(USART1, USART_IT_IDLE) == SET) {
-//      USART_ClearITPendingBit(USART1, USART_IT_IDLE);
-        /* Then read the DR register */
+        /* Read the DR register to clear USART_IT_IDLE pending flag*/
         USART1->DR;
-        /* Here the USART_IT_IDLE pending bit cleared */
-        uart_rx_check(); /* Check for data to process */
+        /* Check for data to process */
+        uart_rx_check();
+        /*
+        * Upon the occurrence of an IDLE interrupt, the data packet should have been fully sent.
+        * Therefore, we reset process_idx to zero.
+        */
+        if (process_idx >= PACKET_LEN) {
+            uart_receive_err_handler();
+        }
+        process_idx = 0;
     }
 
     /* Implement other events when needed */
@@ -298,8 +310,8 @@ USART1_IRQHandler(void) {
 
 void
 uart_test(void) {
-    extern void Elog_Init(void);
-    Elog_Init();
+    extern void elog_init_(void);
+    elog_init_();
     log_i("uart_test");
     uart_init();
     uint8_t bytes[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
