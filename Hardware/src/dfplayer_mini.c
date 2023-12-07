@@ -106,8 +106,8 @@ df_get_file_num_from_folder(uint8_t folder) {
 /*------------------ DEBUG --------------------------*/
 int
 df_test(void) {
-    extern void Elog_Init(void);
-    Elog_Init();
+    extern void elog_init_(void);
+    elog_init_();
     log_d("df_test");
     df_init(20);
     ELOG_ASSERT(df_get_file_num_from_folder(21) == 84);
