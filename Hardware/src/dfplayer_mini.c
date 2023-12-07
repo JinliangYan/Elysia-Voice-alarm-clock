@@ -1,7 +1,7 @@
 /**
 * \file            dfplayer_mini.c
 * \date            12/7/2023
-* \brief
+* \brief           Driver for DF Player mini / MP3-TP-16P
 */
 
 /*
@@ -39,6 +39,16 @@
 #include "delay.h"
 #include "elog.h"
 
+/**
+ * \brief Sources for MP3 module playback
+ * The relationships between devices are in OR logic.
+ * USB Disk -- 01
+ * TF Card -- 02
+ * PC -- 04
+ * FLASH -- 08
+ * USB Disk and TF Card -- 03
+ * \hideinitializer
+ */
 #define SOURCE     0x02 /* TF CARD */
 
 #define START_BYTE 0x7E
@@ -51,6 +61,12 @@
 uint8_t uart_tx_packet[PACKET_LEN];
 uint8_t uart_rx_packet[PACKET_LEN];
 
+/**
+ * \brief Sends a packet using the UART communication
+ *
+ * This function sends a packet through UART communication. The packet consists of a start byte,
+ * followed by the data payload (uart_tx_packet) of PACKET_LEN bytes, and finally an end byte.
+ */
 static void
 df_send_packet(void) {
     uart_send_byte(START_BYTE);
@@ -61,6 +77,19 @@ df_send_packet(void) {
           uart_tx_packet[7]);
 }
 
+/**
+ * \brief Sends a command packet using the UART communication
+ *
+ * This function constructs and sends a command packet through UART communication.
+ * The packet includes version, data length, command, feedback, and two parameters.
+ * The checksum is calculated and appended to the packet. Finally, the packet is sent using
+ * the df_send_packet function.
+ *
+ * \ref df_send_packet(void)
+ * \param cmd: Command byte
+ * \param Parameter1: First parameter byte
+ * \param Parameter2: Second parameter byte
+ */
 static void
 df_send_cmd(uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2) {
     uint16_t Checksum = VERSION + DATA_LEN + cmd + FEEDBACK + Parameter1 + Parameter2;
@@ -78,6 +107,16 @@ df_send_cmd(uint8_t cmd, uint8_t Parameter1, uint8_t Parameter2) {
     df_send_packet();
 }
 
+/**
+ * \brief Initializes the DF Mini Player
+ *
+ * This function initializes the DF Mini Player by performing the following steps:
+ * 1. Initializes the UART communication.
+ * 2. Sends a command to set the source and wait for initialization to complete.
+ * 3. Sends a command to set the volume.
+ *
+ * \param volume: Volume level (0~30)
+ */
 void
 df_init(uint8_t volume) // 0~30
 {
@@ -89,39 +128,69 @@ df_init(uint8_t volume) // 0~30
     log_i("DF mini player is initialize success.");
 }
 
+/**
+ * \brief Set the volume level of the DF Mini Player
+ *
+ * This function sets the volume level of the DF Mini Player to the specified value.
+ *
+ * \param volume Volume level (0~30)
+ */
 void
 df_set_volume(uint8_t volume) {
     df_send_cmd(0x06, 0x00, volume);
 }
 
+/**
+ * \brief Pause playback on the DF Mini Player
+ */
 void
 df_pause(void) {
     df_send_cmd(0x0E, 0, 0);
 }
 
+/**
+ * \brief Continue playback on the DF Mini Player
+ */
 void
 df_continue(void) {
     df_send_cmd(0x0D, 0, 0);
 }
 
 /**
- * \brief       Play a song from a specified folder
- * \param       folder Folder name (1 ~ 99)
- * \note        The folder should be named with two-digit numbers, such as 00, 01, ...
- * \param       number Song name (1 ~ 255)
- * \note        The song number should be prefixed with three-digit numbers, such as 000, 001, ...
+ * \brief Play a song from a specified folder
+ *
+ * This function plays a song from the specified folder on the DF Mini Player.
+ *
+ * \param folder Folder name (1 ~ 99)
+ * \note The folder should be named with two-digit numbers, such as 00, 01, ...
+ * \param number Song name (1 ~ 255)
+ * \note The song number should be prefixed with three-digit numbers, such as 000, 001, ...
  */
-
 void
 df_play_from_folder(uint8_t folder, uint8_t number) {
     df_send_cmd(0x0F, folder, number);
 }
 
+/**
+ * \brief Set the DF Mini Player to loop playback from a specified folder
+ *
+ * This function sets the DF Mini Player to loop playback from the specified folder.
+ *
+ * \param folder Folder name (1 ~ 99)
+ */
 void
 df_loop_from_folder(uint8_t folder) {
     df_send_cmd(0x17, 0x00, folder);
 }
 
+/**
+ * \brief Get the number of files in a specified folder
+ *
+ * This function retrieves the number of files in the specified folder on the DF Mini Player.
+ *
+ * \param folder Folder name (1 ~ 99)
+ * \return Number of files in the folder
+ */
 uint8_t
 df_get_file_num_from_folder(uint8_t folder) {
     df_send_cmd(0x4E, 0, folder);
@@ -130,6 +199,14 @@ df_get_file_num_from_folder(uint8_t folder) {
 }
 
 #if defined(DEBUG)
+/**
+ * \brief Perform testing on the DF Mini Player
+ *
+ * This function performs testing on the DF Mini Player. It initializes the player,
+ * performs a test to get the number of files in a specific folder, and asserts the result.
+ *
+ * \return 0 if the test passed
+ */
 int
 df_test(void) {
     extern void elog_init_(void);
