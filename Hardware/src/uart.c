@@ -1,7 +1,7 @@
 /**
 * \file            uart.c
 * \date            12/4/2023
-* \brief
+* \brief           USART1 Driver Implementation
 */
 
 /*

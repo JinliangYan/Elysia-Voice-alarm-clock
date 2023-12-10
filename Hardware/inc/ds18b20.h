@@ -1,7 +1,7 @@
 /**
 * \file            ds18b20.h
 * \date            11/23/2023
-* \brief
+* \brief           Header file for DS18B20 module
 */
 
 /*
@@ -35,11 +35,12 @@
 #ifndef ElysiaVACLK_DS18B20_H
 #define ElysiaVACLK_DS18B20_H
 
+#include "stm32f10x.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#include "stm32f10x.h"
 void ds18b20_convert_t();
 float ds18b20_read_t();
 void ds18b20_init(void);

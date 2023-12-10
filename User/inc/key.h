@@ -1,7 +1,7 @@
 /**
-* \file            key.j
+* \file            key.h
 * \date            11/29/2023
-* \brief
+* \brief           Header file for handling keypad input
 */
 
 /*
@@ -32,8 +32,8 @@
 * Author:          JinLiang YAN <yanmiku0206@outlook.com>
 */
 
-#ifndef ElysiaVAC_KEY_H
-#define ElysiaVAC_KEY_H
+#ifndef ELYSIA_VOICE_ALARM_CLOCK_KEY_H
+#define ELYSIA_VOICE_ALARM_CLOCK_KEY_H
 
 #include "stm32f10x.h"
 
@@ -41,15 +41,18 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/**
+* \brief           Enumeration for different keys on the keypad
+*/
 typedef enum Key_KeyDef {
-    KEY_MODE = 0,
-    KEY_PLAY_PAUSE,
-    KEY_VOICE_RESPONSE,
-    KEY_SET_TIME_ALARM,
-    KEY_VOLUME_PREV,
-    KEY_VOLUME_NEXT,
-    KEY_TIME_DECREASE,
-    KEY_TIME_INCREASE,
+   KEY_MODE = 0,               /*!< Mode key */
+   KEY_PLAY_PAUSE,             /*!< Play/Pause key */
+   KEY_VOICE_RESPONSE,         /*!< Voice response key */
+   KEY_SET_TIME_ALARM,         /*!< Set time alarm key */
+   KEY_VOLUME_PREV,            /*!< Volume previous key */
+   KEY_VOLUME_NEXT,            /*!< Volume next key */
+   KEY_TIME_DECREASE,          /*!< Time decrease key */
+   KEY_TIME_INCREASE,          /*!< Time increase key */
 } Key_KeyDef;
 
 void key_init(void);
@@ -58,4 +61,4 @@ void key_init(void);
 }
 #endif /* __cplusplus */
 
-#endif //ElysiaVAC_KEY_H
+#endif /* ELYSIA_VOICE_ALARM_CLOCK_KEY_H */

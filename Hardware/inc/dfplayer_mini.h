@@ -1,7 +1,6 @@
 /**
 * \file            dfplayer_mini.h
-* \date
-* \brief
+* \brief           Header file for DFPlayer Mini module
 */
 
 /*
@@ -47,6 +46,7 @@ void df_continue(void);
 void df_play_from_folder(uint8_t folder, uint8_t number);
 void df_loop_from_folder(uint8_t folder);
 void df_set_volume(uint8_t volume);
+uint8_t df_get_file_num_from_folder(uint8_t folder);
 
 #ifdef __cplusplus
 }

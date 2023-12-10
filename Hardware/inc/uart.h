@@ -1,7 +1,7 @@
 /**
 * \file            uart.h
 * \date            12/4/2023
-* \brief
+* \brief           Header file for UART module
 */
 
 /*

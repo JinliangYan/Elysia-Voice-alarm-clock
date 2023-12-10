@@ -1,7 +1,7 @@
 /**
 * \file            ds1302.h
 * \date            11/22/2023
-* \brief
+* \brief           Header file for DS1302 module
 */
 
 /*

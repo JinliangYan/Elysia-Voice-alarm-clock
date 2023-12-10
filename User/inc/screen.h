@@ -1,7 +1,7 @@
 /**
 * \file            screen.h
 * \date            11/23/2023
-* \brief
+* \brief           Header file for managing the display screen
 */
 
 /*
@@ -32,8 +32,8 @@
 * Author:          JinLiang YAN <yanmiku0206@outlook.com>
 */
 
-#ifndef ElysiaVACLK_HOMEPAGE_H
-#define ElysiaVACLK_HOMEPAGE_H
+#ifndef ELYSIA_VOICE_ALARM_CLOCK_SCREEN_H
+#define ELYSIA_VOICE_ALARM_CLOCK_SCREEN_H
 
 #include "stm32f10x.h"
 
@@ -41,17 +41,43 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define SCREEN_TYPE_NUM 2
+/**
+* \brief           Number of screen types
+*/
+#define SCREEN_TYPE_NUM     2
 
-typedef enum screen { SCREEN_TIME, SCREEN_MUSIC } screen_t;
+/**
+* \brief           Enumeration for different screen types
+*/
+typedef enum screen {
+   SCREEN_TIME,        /*!< Time screen */
+   SCREEN_MUSIC        /*!< Music screen */
+} screen_t;
 
+/**
+* \brief           Initializes the screen
+*/
 void screen_init(void);
+
+/**
+* \brief           Updates the screen
+*/
 void screen_update(void);
+
+/**
+* \brief           Switches the current screen to the specified type
+* \param[in]       newType: The new screen type
+*/
 void screen_switch(screen_t newType);
+
+/**
+* \brief           Gets the current screen type
+* \return          The current screen type
+*/
 screen_t screen_get_type(void);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif //ElysiaVACLK_HOMEPAGE_H
+#endif /* ELYSIA_VOICE_ALARM_CLOCK_SCREEN_H */

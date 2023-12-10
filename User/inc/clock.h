@@ -1,7 +1,7 @@
 /**
 * \file            clock.h
 * \date            11/23/2023
-* \brief
+* \brief           Header file for managing the clock and time-related functionalities
 */
 
 /*
@@ -32,8 +32,8 @@
 * Author:          JinLiang YAN <yanmiku0206@outlook.com>
 */
 
-#ifndef ElysiaVACLK_CLOCK_H
-#define ElysiaVACLK_CLOCK_H
+#ifndef ELYSIA_VOICE_ALARM_CLOCK_CLOCK_H
+#define ELYSIA_VOICE_ALARM_CLOCK_CLOCK_H
 
 #include "stm32f10x.h"
 
@@ -41,37 +41,83 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define CLOCK_NAME "Elysia"
-
+/**
+* \brief           Enumeration for the time of day
+*/
 typedef enum clock_time_of_day {
-    CLOCK_MORNING,
-    CLOCK_AFTERNOON,
-    CLOCK_EVENING,
-    CLOCK_DUSK,
-    CLOCK_MIDNIGHT,
+   CLOCK_MORNING,      /*!< Morning time */
+   CLOCK_AFTERNOON,    /*!< Afternoon time */
+   CLOCK_EVENING,      /*!< Evening time */
+   CLOCK_DUSK,         /*!< Dusk time */
+   CLOCK_MIDNIGHT,     /*!< Midnight time */
 } clock_time_of_day_t;
 
+/**
+* \brief           Enumeration for the season
+*/
 typedef enum clock_season {
-    CLOCK_SPRING,
-    CLOCK_SUMMER,
-    CLOCK_AUTUMN,
-    CLOCK_WINTER,
+   CLOCK_SPRING,       /*!< Spring season */
+   CLOCK_SUMMER,       /*!< Summer season */
+   CLOCK_AUTUMN,       /*!< Autumn season */
+   CLOCK_WINTER,       /*!< Winter season */
 } clock_season_t;
 
+/**
+* \brief           Year, month, day, hour, minute, second, and week information
+*/
 extern uint8_t clock_year, clock_month, clock_day, clock_hour, clock_minute, clock_second, clock_week;
+
+/**
+* \brief           Advice for the current time
+*/
 extern char* clock_advice;
+
+/**
+* \brief           Current time of day
+*/
 extern clock_time_of_day_t clock_time_of_day;
+
+/**
+* \brief           Current season
+*/
 extern clock_season_t clock_season;
 
+/**
+* \brief           Initializes the clock module
+*/
 void clock_init(void);
+
+/**
+* \brief           Updates the clock time
+*/
 void clock_update(void);
+
+/**
+* \brief           Checks if it's sleep time
+* \return          1 if it's sleep time, 0 otherwise
+*/
 uint8_t clock_is_sleep_time(void);
+
+/**
+* \brief           Checks if it's time to get up
+* \return          1 if it's time to get up, 0 otherwise
+*/
 uint8_t clock_is_getup_time(void);
+
+/**
+* \brief           Checks if it's your birthday
+* \return          1 if it's your birthday, 0 otherwise
+*/
 uint8_t clock_is_my_birthday(void);
+
+/**
+* \brief           Checks if it's Elysia's birthday
+* \return          1 if it's Elysia's birthday, 0 otherwise
+*/
 uint8_t clock_is_elysia_birthday(void);
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif //ElysiaVACLK_CLOCK_H
+#endif /* ELYSIA_VOICE_ALARM_CLOCK_CLOCK_H */

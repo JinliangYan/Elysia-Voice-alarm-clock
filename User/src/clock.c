@@ -1,7 +1,7 @@
 /**
 * \file            clock.c
 * \date            11/23/2023
-* \brief
+* \brief           Implementation of clock functionality and time-related operations.
 */
 
 /*
@@ -32,8 +32,10 @@
 * Author:          JinLiang YAN <yanmiku0206@outlook.com>
 */
 
+#include <stdio.h>
 #include "clock.h"
 #include "ds1302.h"
+#include "../../config/clock_cfg.h"
 
 uint8_t clock_year, clock_month, clock_day, clock_hour, clock_minute, clock_second, clock_week;
 char* clock_advice;
@@ -74,17 +76,20 @@ clock_determine_season(void) {
 
 static void
 clock_user_config(void) {
-    /*配置睡觉时间*/
-    clock_sleep_time[0] = 11;
-    clock_sleep_time[1] = 10;
-    /*配置起床时间*/
-    clock_get_up_time[0] = 7;
-    clock_get_up_time[1] = 30;
-    /*设置生日*/
-    /*自己生日*/
-    clock_birthday_me[0] = 2;
-    clock_birthday_me[1] = 6;
-    /*爱莉生日*/
+    size_t t1, t2;
+
+    sscanf(CLOCK_CFG_SLEEP_TIME, "%d:%d", &t1, &t2);
+    clock_sleep_time[0] = t1;
+    clock_sleep_time[1] = t2;
+
+    sscanf(CLOCK_CFG_GETUP_TIME, "%d:%d", &t1, &t2);
+    clock_get_up_time[0] = t1;
+    clock_get_up_time[1] = t2;
+
+    sscanf(CLOCK_CFG_BIRTHDAY, "%d-%d", &t1, &t2);
+    clock_birthday_me[0] = t1;
+    clock_birthday_me[1] = t2;
+
     clock_birthday_elysia[0] = 11;
     clock_birthday_elysia[1] = 11;
 }
