@@ -1,7 +1,38 @@
-//
-// Created by Jinliang on 11/23/2023.
-//
+/**
+* \file            clock.c
+* \date            11/23/2023
+* \brief           Implementation of clock functionality and time-related operations.
+*/
 
+/*
+* Copyright (c) 2023 JinLiang YAN
+*
+* Permission is hereby granted, free of charge, to any person
+* obtaining a copy of this software and associated documentation
+* files (the "Software"), to deal in the Software without restriction,
+* including without limitation the rights to use, copy, modify, merge,
+* publish, distribute, sublicense, and/or sell copies of the Software,
+* and to permit persons to whom the Software is furnished to do so,
+* subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be
+* included in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+* AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+* HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* This file is part of Elysia-Voice-alarm-clock.
+*
+* Author:          JinLiang YAN <yanmiku0206@outlook.com>
+*/
+
+#include <stdio.h>
 #include "clock.h"
 #include "ds1302.h"
 
@@ -44,17 +75,20 @@ clock_determine_season(void) {
 
 static void
 clock_user_config(void) {
-    /*配置睡觉时间*/
-    clock_sleep_time[0] = 11;
-    clock_sleep_time[1] = 10;
-    /*配置起床时间*/
-    clock_get_up_time[0] = 7;
-    clock_get_up_time[1] = 30;
-    /*设置生日*/
-    /*自己生日*/
-    clock_birthday_me[0] = 2;
-    clock_birthday_me[1] = 6;
-    /*爱莉生日*/
+    size_t t1, t2;
+
+    sscanf(CLOCK_CFG_SLEEP_TIME, "%d:%d", &t1, &t2);
+    clock_sleep_time[0] = t1;
+    clock_sleep_time[1] = t2;
+
+    sscanf(CLOCK_CFG_GETUP_TIME, "%d:%d", &t1, &t2);
+    clock_get_up_time[0] = t1;
+    clock_get_up_time[1] = t2;
+
+    sscanf(CLOCK_CFG_BIRTHDAY, "%d-%d", &t1, &t2);
+    clock_birthday_me[0] = t1;
+    clock_birthday_me[1] = t2;
+
     clock_birthday_elysia[0] = 11;
     clock_birthday_elysia[1] = 11;
 }

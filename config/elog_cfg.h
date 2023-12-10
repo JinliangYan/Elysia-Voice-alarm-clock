@@ -29,8 +29,12 @@
 #ifndef _ELOG_CFG_H_
 #define _ELOG_CFG_H_
 /*---------------------------------------------------------------------------*/
+
+#if defined(DEBUG)
 /* enable log output. */
 #define ELOG_OUTPUT_ENABLE
+#endif  /* DEBUG */
+
 /* setting static output log level. range: from ELOG_LVL_ASSERT to ELOG_LVL_VERBOSE */
 #define ELOG_OUTPUT_LVL                          ELOG_LVL_VERBOSE
 /* enable assert check */

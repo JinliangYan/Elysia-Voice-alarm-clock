@@ -46,7 +46,7 @@ else ()
     add_compile_options(-Og -g)
 endif ()
 
-add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD)
+add_definitions(-DUSE_STDPERIPH_DRIVER -DSTM32F10X_MD -DDEBUG)
 
 include_directories(
         #标准库部分

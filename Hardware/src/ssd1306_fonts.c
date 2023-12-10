@@ -1,4 +1,4 @@
-/**
+/*
  * original author:  Tilen Majerle<tilen@majerle.eu>
  * modification for STM32f10x: Alexander Lutsai<s.lyra@ya.ru>
    ----------------------------------------------------------------------
@@ -17,18 +17,6 @@
    ----------------------------------------------------------------------
  */
 #include "ssd1306_fonts.h"
-
-//const uint16_t Font12x12[] = {
-//        // ... (other characters)
-//
-//        // Character: '℃'
-//        ['T'] = 0x0000, 0x0000, 0x0000, // 第一行
-//            0x0000, 0x07E0, 0x0410, // 第二行
-//            0x0410, 0x07E0, 0x0000, // 第三行
-//            0x0000, 0x0000, 0x0000  // 第四行
-//
-//        // ... (other characters)
-//};
 
 const uint16_t Font7x10[] = {
     0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, // sp
@@ -517,12 +505,6 @@ const uint16_t Font16x26[] = {
 FontDef_t Font_7x10 = {7, 10, Font7x10};
 
 FontDef_t Font_11x18 = {11, 18, Font11x18};
-
-//FontDef_t Font_12x12 = {
-//        12,
-//        12,
-//        Font12x12
-//};
 
 FontDef_t Font_16x26 = {16, 26, Font16x26};
 
