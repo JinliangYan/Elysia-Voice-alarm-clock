@@ -106,7 +106,7 @@ void screen_update(void) {
 
             /* Display advice and separator line */
             SSD1306_GotoXY(0, SSD1306_HEIGHT - 1 - 20);
-            SSD1306_PUTS_S(CLOCK_NAME);
+            SSD1306_PUTS_S(CLOCK_CFG_CLOCK_NAME);
             SSD1306_GotoXY(0, SSD1306_HEIGHT - 1 - 10);
             SSD1306_PUTS_S("want u 2 ");
             SSD1306_GotoXY(9 * 7 + 1, SSD1306_HEIGHT - 1 - 18);

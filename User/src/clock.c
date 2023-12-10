@@ -35,7 +35,6 @@
 #include <stdio.h>
 #include "clock.h"
 #include "ds1302.h"
-#include "../../config/clock_cfg.h"
 
 uint8_t clock_year, clock_month, clock_day, clock_hour, clock_minute, clock_second, clock_week;
 char* clock_advice;

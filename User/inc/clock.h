@@ -36,6 +36,7 @@
 #define ELYSIA_VOICE_ALARM_CLOCK_CLOCK_H
 
 #include "stm32f10x.h"
+#include "../../config/clock_cfg.h"
 
 #ifdef __cplusplus
 extern "C" {

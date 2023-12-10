@@ -42,6 +42,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 /**
+ * \brief          The clock name
+ * \hideinitializer
+ */
+#define CLOCK_CFG_CLOCK_NAME "Elysia"
+
+/**
  * \brief          User birthday configuration
  * \hideinitializer
  */
