@@ -35,8 +35,8 @@
 #include <stdio.h>
 #include "clock.h"
 #include "ds18b20.h"
-#include "ssd1306.h"
 #include "screen.h"
+#include "ssd1306.h"
 
 #define LOG_TAG "SCREEN"
 #include "elog.h"
@@ -46,7 +46,7 @@
 #define SSD1306_PUTS_L(str) SSD1306_Puts(str, &Font_16x26, SSD1306_COLOR_WHITE)
 
 /* Predefined kaomoji for display */
-static char *kaomoji[] = {
+static char* kaomoji[] = {
     "(OwO)", "(>_<)", "(QwQ)", "(^_^)", "(O.o)", "(>_<)",
 };
 
@@ -56,7 +56,8 @@ static screen_t screen_type = SCREEN_TIME;
 /**
  * \brief          Initializes the screen module.
  */
-void screen_init(void) {
+void
+screen_init(void) {
     SSD1306_Init();
     ds18b20_init();
     screen_switch(SCREEN_TIME);
@@ -64,29 +65,32 @@ void screen_init(void) {
 
 /**
  * \brief          Switches the screen to a new type.
- * \param newType: New screen type to switch to.
+ * \param new_type: New screen type to switch to.
  */
-void screen_switch(screen_t newType) {
-    log_i("Screen type %d --> %d", screen_type, newType);
-    screen_type = newType;
+void
+screen_switch(screen_t new_type) {
+    log_i("Screen type %d --> %d", screen_type, new_type);
+    screen_type = new_type;
 }
 
 /**
  * \brief          Gets the current screen type.
  * \return         Current screen type.
  */
-screen_t screen_get_type(void) {
+screen_t
+screen_get_type(void) {
     return screen_type;
 }
 
 /**
  * \brief          Updates the content on the screen based on the current screen type.
  */
-void screen_update(void) {
+void
+screen_update(void) {
+    SSD1306_Fill(SSD1306_COLOR_BLACK);
     switch (screen_type) {
         case SCREEN_TIME:
             ds18b20_convert_t();
-            SSD1306_Fill(SSD1306_COLOR_BLACK);
             char buffer[20];
 
             /* Display temperature and kaomoji */
@@ -116,12 +120,10 @@ void screen_update(void) {
 
         case SCREEN_MUSIC:
             SSD1306_GotoXY(16, SSD1306_HEIGHT / 2 - 12);
-            SSD1306_Fill(SSD1306_COLOR_BLACK);
             SSD1306_PUTS_L("MUSIC");
             break;
 
-        default:
-            screen_switch(SCREEN_TIME);
+        default: screen_switch(SCREEN_TIME);
     }
     SSD1306_UpdateScreen();
 }

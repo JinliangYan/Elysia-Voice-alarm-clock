@@ -122,7 +122,8 @@ key_update(void) {
  *
  * \param[in] btn Pointer to the button structure (unused).
  */
-static void mode_single_click_handler(void* btn) {
+static void
+mode_single_click_handler(void* btn) {
     log_i("Switch mode...");
     screen_switch((screen_get_type() + 1) % SCREEN_TYPE_NUM);
     key_update();
@@ -133,7 +134,8 @@ static void mode_single_click_handler(void* btn) {
  *
  * \param[in] btn Pointer to the button structure (unused).
  */
-static void play_pause_single_click_handler(void* btn) {
+static void
+play_pause_single_click_handler(void* btn) {
     static uint8_t i;
 
     if (i % 2 == 0) {
@@ -152,11 +154,11 @@ static void play_pause_single_click_handler(void* btn) {
  *
  * \param[in] btn Pointer to the button structure (unused).
  */
-static void voice_response_single_click_handler(void* btn) {
+static void
+voice_response_single_click_handler(void* btn) {
     log_i("Say something...");
     voice_invoke();
 }
-
 
 /**
  * \brief Handler for the start of a single click on the set time button

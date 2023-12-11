@@ -66,9 +66,9 @@ void screen_update(void);
 
 /**
 * \brief           Switches the current screen to the specified type
-* \param[in]       newType: The new screen type
+* \param[in]       new_type: The new screen type
 */
-void screen_switch(screen_t newType);
+void screen_switch(screen_t new_type);
 
 /**
 * \brief           Gets the current screen type
