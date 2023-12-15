@@ -16,7 +16,7 @@
 
 **接线图**
 
-​	~~还没研究好怎么画~~
+![](docs\README\imgs\wiring_diagram.jpg)
 
 # 使用教程
 
