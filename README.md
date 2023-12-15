@@ -16,7 +16,7 @@
 
 **接线图**
 
-![](docs\README\imgs\wiring_diagram.jpg)
+![docs\README\imgs\wiring_diagram.jpg](https://github.com/JinliangYan/Elysia-Voice-alarm-clock/blob/master/docs/README/imgs/wiring_diagram.jpg)
 
 # 使用教程
 
